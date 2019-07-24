@@ -10,7 +10,7 @@ namespace DatingSite.Demo
     class App
     {
         DataAccess _dataAccess = new DataAccess();
-        Menu _menu;
+        Menu _menu= new Menu();
 
         public void Run()
         {
@@ -34,7 +34,7 @@ namespace DatingSite.Demo
             _menu.SwitchPageByUserInput();
         }
 
-        public void PageAddPost()
+        public void PageAddPerson()
         {
             Console.WriteLine("Add post");
 
@@ -166,22 +166,19 @@ namespace DatingSite.Demo
         //}
 
 
-<<<<<<< HEAD
         private void ShowAllUsersAnswersBrief()
         {
-            List<UsersAnswers> list = _dataAccess.GetAllPersons();
-=======
+            //List<UsersAnswers> list = _dataAccess.GetAllPersons();
         //private void ShowAllUsersAnswersBrief()
         //{
         //    List<UsersAnswers> list = _dataAccess.GetAllAnswersBrief();
->>>>>>> 67cd16e3d69d90e8a97d9a19521b4cdbb9e91d3e
 
         //    foreach (UsersAnswers answer in list)
         //    {
         //        WriteLine(answer.Id.ToString().PadRight(8) + answer.Answer1.PadRight(10) + answer.Answer2.PadRight(10) + answer.Answer3.PadRight(10) + answer.Answer4.PadRight(10) + answer.Answer5.PadRight(0));            }
 
         //    WriteLine();
-        //}
+        }
 
 
         private void Header(string text)

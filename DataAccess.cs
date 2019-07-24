@@ -30,11 +30,7 @@ namespace DatingSite.Demo
                         Name = reader.GetSqlString(1).Value,
                         Age = reader.GetSqlInt32(2).Value,
                         Gender = reader.GetSqlString(3).Value,
-<<<<<<< HEAD
                         Sexuality = reader.GetSqlString(4).Value                        
-=======
-                        Sexuality = reader.GetSqlString(4).Value
->>>>>>> 67cd16e3d69d90e8a97d9a19521b4cdbb9e91d3e
                     };
                     list.Add(person);
                 }
