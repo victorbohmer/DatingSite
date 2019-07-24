@@ -86,6 +86,16 @@ namespace DatingSite.Demo
             ReturnToMenuAfterKeyPress("Question has been saved");
         }
 
+        public void PageCheckMatch()
+        {
+            UI.Header("See match with other users");
+
+            List<Person> personList = _dataAccess.GetAllPersonsWithAnswers();
+
+
+            ReturnToMenuAfterKeyPress("");
+        }
+
         private void AddAnswersToQuestion(Question newQuestion)
         {
             while (true)
@@ -113,6 +123,8 @@ namespace DatingSite.Demo
                 }
             }
         }
+
+
 
         //public void PageDeletePost()
         //{

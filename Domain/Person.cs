@@ -11,7 +11,7 @@ namespace DatingSite.Demo
         public int Age { get; set; }
         public string Sexuality { get; set; }
         public string Gender { get; set; }
-
+        public List<Answer> AnswerList { get; set; } = new List<Answer>();
         public override string ToString()
         {
             string personInfo = "";
@@ -22,7 +22,6 @@ namespace DatingSite.Demo
             personInfo += Sexuality.PadRight(10);
             return personInfo;
         }
-
         public static string HeaderRow()
         {
             string headerText = "";

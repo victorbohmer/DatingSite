@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace DatingSite.Demo
 {
@@ -31,7 +32,7 @@ namespace DatingSite.Demo
                         Name = reader.GetSqlString(1).Value,
                         Age = reader.GetSqlInt32(2).Value,
                         Gender = reader.GetSqlString(3).Value,
-                        Sexuality = reader.GetSqlString(4).Value                        
+                        Sexuality = reader.GetSqlString(4).Value
                     };
                     list.Add(person);
                 }
@@ -104,7 +105,7 @@ namespace DatingSite.Demo
             }
         }
 
-        public int ExecuteSqlAndReturnAffectedId (string sql, List<SqlParameter> parameterList)
+        public int ExecuteSqlAndReturnAffectedId(string sql, List<SqlParameter> parameterList)
         {
             int output;
             using (SqlConnection connection = new SqlConnection(conString))
@@ -119,7 +120,57 @@ namespace DatingSite.Demo
             }
             return output;
         }
+        public List<Person> GetAllPersonsWithAnswers()
+        {
+            var sql = @"SELECT Person.Id, [Name], [Age], [Gender], [Sexuality], [QuestionId], [Score], [Important]
+                        FROM UserAnswerForQuestion LEFT JOIN Person ON UserId = Person.Id
+                        LEFT JOIN Answer ON AnswerId = Answer.Id";
 
+            using (SqlConnection connection = new SqlConnection(conString))
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                var list = new List<Person>();
+
+                while (reader.Read())
+                {
+                    CreatePersonInList(ref list, reader);
+
+                    AddAnswerToPerson(ref list, reader);
+                }
+                return list;
+            }
+        }
+        private void CreatePersonInList(ref List<Person> personList, SqlDataReader reader)
+        {
+            int id = reader.GetSqlInt32(0).Value;
+
+            if (!personList.Select(x => x.Id).Contains(id))
+            {
+                var person = new Person
+                {
+                    Id = reader.GetSqlInt32(0).Value,
+                    Name = reader.GetSqlString(1).Value,
+                    Age = reader.GetSqlInt32(2).Value,
+                    Gender = reader.GetSqlString(3).Value,
+                    Sexuality = reader.GetSqlString(4).Value
+                };
+                personList.Add(person);
+            }
+        }
+        private void AddAnswerToPerson(ref List<Person> personList, SqlDataReader reader)
+        {
+            Answer answer = new Answer {
+                QuestionId = reader.GetSqlInt32(5).Value,
+                Score = reader.GetSqlInt32(6).Value,
+                Important = reader.GetSqlBoolean(7).Value
+            };
+            int id = reader.GetSqlInt32(0).Value;
+            personList.Where(x => x.Id == id).First().AnswerList.Add(answer);
+        }
 
         //public List<BlogPost> GetAllBlogPostsBrief()
         //{
