@@ -9,7 +9,7 @@ namespace DatingSite.Demo
     {
         private const string conString = "Server=(localdb)\\mssqllocaldb; Database=DatingSite";
 
-        
+
         public List<Question> GetAllQuestions()
         {
             var sql = @"SELECT [Id], [Text]
@@ -29,7 +29,7 @@ namespace DatingSite.Demo
                     var Question = new Question
                     {
                         Id = reader.GetSqlInt32(0).Value,
-                        Text = reader.GetSqlString(2).Value,            
+                        Text = reader.GetSqlString(1).Value,
                     };
                     list.Add(Question);
                 }
@@ -59,7 +59,7 @@ namespace DatingSite.Demo
                         Id = reader.GetSqlInt32(0).Value,
                         QuestionId = reader.GetSqlInt32(1).Value,
                         Text = reader.GetSqlString(2).Value,
-                        Score = reader.GetSqlInt32(3).Value                        
+                        Score = reader.GetSqlInt32(3).Value
                     };
                     list.Add(Answer);
                 }
@@ -138,7 +138,6 @@ namespace DatingSite.Demo
             }
         }
 
-<<<<<<< HEAD
         internal void AddQuestion(Question newQuestion)
         {
             string sql = @"INSERT INTO Question (Text)
@@ -166,8 +165,6 @@ namespace DatingSite.Demo
             }
         }
 
-=======
->>>>>>> 38abff01522da96c1423a33bcd1f0b4c48ee0084
         public int ExecuteSqlAndReturnAffectedId(string sql, List<SqlParameter> parameterList)
         {
             int output;
@@ -226,7 +223,8 @@ namespace DatingSite.Demo
         }
         private void AddAnswerToPerson(ref List<Person> personList, SqlDataReader reader)
         {
-            Answer answer = new Answer {
+            Answer answer = new Answer
+            {
                 QuestionId = reader.GetSqlInt32(5).Value,
                 Score = reader.GetSqlInt32(6).Value,
                 Important = reader.GetSqlBoolean(7).Value

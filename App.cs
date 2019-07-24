@@ -125,18 +125,16 @@ namespace DatingSite.Demo
         }
 
 
-<<<<<<< HEAD
-=======
+
         public void PageAnswerQuestions()
         {
             UI.Header("Answer Questions");            
             List<Answer> answerList = _dataAccess.GetAllAnswers();
             List<Question> QuestionList = _dataAccess.GetAllQuestions();
-            List<string> UserAnswerForQuestion = new List<string>();
+            //List<string> UserAnswerForQuestion = new List<string>();
                 
             foreach (Question question in QuestionList)
             {                
-                string userAnswer = UI.GetSQLValidString(question.ToString());
                 List<Answer> validAnswers = answerList.Where(x => x.QuestionId == question.Id).ToList();
                 for (int answerIndex = 0; answerIndex < validAnswers.Count; answerIndex++)
                 {
@@ -144,13 +142,12 @@ namespace DatingSite.Demo
                 }
                 int userChoice = UI.GetNumericInput("Ange val: ");
 
-
-                UserAnswerForQuestion.Add(userAnswer);
+                //UserAnswerForQuestion.Add(userAnswer);
             }
 
-            UI.WriteLine();
+            ReturnToMenuAfterKeyPress("Thank you for answering the questions!");
         }
->>>>>>> 38abff01522da96c1423a33bcd1f0b4c48ee0084
+
 
         //public void PageDeletePost()
         //{
