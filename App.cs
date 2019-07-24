@@ -186,7 +186,7 @@ namespace DatingSite.Demo
 
         private void ShowAllUsersAnswersBrief()
         {
-            List<UsersAnswers> list = _dataAccess.GetAllAnswersBrief();
+            List<UsersAnswers> list = _dataAccess.GetAllPersons();
 
             foreach (UsersAnswers answer in list)
             {

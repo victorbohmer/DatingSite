@@ -1,11 +1,10 @@
 ﻿
 USE DatingSite
 
--- Två bloggposter
 
---INSERT INTO BlogPost (Author, Title) 
---VALUES ('Lily', 'The sun is bright')
+INSERT INTO Person (Name, Age, Gender, Sexuality) 
+VALUES ('Lily', 32 ,'Female', 'straight')
 
---INSERT INTO BlogPost (Author, Title) 
---VALUES ('Ethan', 'I will go swimming')
+INSERT INTO Person (Name, Age, Gender, Sexuality) 
+VALUES ('Max', 30 ,'Male', 'straight')
 

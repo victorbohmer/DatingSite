@@ -8,10 +8,10 @@ namespace DatingSite.Demo
         private const string conString = "Server=(localdb)\\mssqllocaldb; Database=DatingSite";
 
 
-        public List<UsersAnswers> GetAllAnswersBrief()
+        public List<Person> GetAllPersons()
         {
-            var sql = @"SELECT [Id], [Answer1], [Answer2], [Answer3], [Answer4], [Answer5]
-                        FROM UsersAnswers";
+            var sql = @"SELECT [Id], [Name], [Age], [Gender], [Sexuality]
+                        FROM Person";
 
             using (SqlConnection connection = new SqlConnection(conString))
             using (SqlCommand command = new SqlCommand(sql, connection))
@@ -20,20 +20,19 @@ namespace DatingSite.Demo
 
                 SqlDataReader reader = command.ExecuteReader();
 
-                var list = new List<UsersAnswers>();
+                var list = new List<Person>();
 
                 while (reader.Read())
                 {
-                    var answer = new UsersAnswers
+                    var person = new Person
                     {
                         Id = reader.GetSqlInt32(0).Value,
-                        Answer1 = reader.GetSqlString(1).Value,
-                        Answer2 = reader.GetSqlString(2).Value,
-                        Answer3 = reader.GetSqlString(3).Value,
-                        Answer4 = reader.GetSqlString(4).Value,
-                        Answer5 = reader.GetSqlString(5).Value,
+                        Name = reader.GetSqlString(1).Value,
+                        Age = reader.GetSqlInt32(2).Value,
+                        Gender = reader.GetSqlString(3).Value,
+                        Sexuality = reader.GetSqlString(4).Value                        
                     };
-                    list.Add(answer);
+                    list.Add(person);
                 }
 
                 return list;
