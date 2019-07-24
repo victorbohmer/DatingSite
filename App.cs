@@ -111,6 +111,31 @@ namespace DatingSite.Demo
             }
         }
 
+
+        public void PageAnswerQuestions()
+        {
+            UI.Header("Answer Questions");            
+            List<Answer> answerList = _dataAccess.GetAllAnswers();
+            List<Question> QuestionList = _dataAccess.GetAllQuestions();
+            List<string> UserAnswerForQuestion = new List<string>();
+                
+            foreach (Question question in QuestionList)
+            {                
+                string userAnswer = UI.GetSQLValidString(question.ToString());
+                List<Answer> validAnswers = answerList.Where(x => x.QuestionId == question.Id).ToList();
+                for (int answerIndex = 0; answerIndex < validAnswers.Count; answerIndex++)
+                {
+                    UI.WriteLine($"{answerIndex + 1}: {validAnswers[answerIndex].Text}");
+                }
+                int userChoice = UI.GetNumericInput("Ange val: ");
+
+
+                UserAnswerForQuestion.Add(userAnswer);
+            }
+
+            UI.WriteLine();
+        }
+
         //public void PageDeletePost()
         //{
         //    Header("Radera");

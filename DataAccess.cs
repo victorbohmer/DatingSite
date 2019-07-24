@@ -7,6 +7,65 @@ namespace DatingSite.Demo
     {
         private const string conString = "Server=(localdb)\\mssqllocaldb; Database=DatingSite";
 
+        
+        public List<Question> GetAllQuestions()
+        {
+            var sql = @"SELECT [Id], [Text]
+                        FROM Question";
+
+            using (SqlConnection connection = new SqlConnection(conString))
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                var list = new List<Question>();
+
+                while (reader.Read())
+                {
+                    var Question = new Question
+                    {
+                        Id = reader.GetSqlInt32(0).Value,
+                        Text = reader.GetSqlString(2).Value,            
+                    };
+                    list.Add(Question);
+                }
+                return list;
+            }
+        }
+
+
+        public List<Answer> GetAllAnswers()
+        {
+            var sql = @"SELECT [Id], [QuestionId], [Text], [Score]
+                        FROM Answer";
+
+            using (SqlConnection connection = new SqlConnection(conString))
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                var list = new List<Answer>();
+
+                while (reader.Read())
+                {
+                    var Answer = new Answer
+                    {
+                        Id = reader.GetSqlInt32(0).Value,
+                        QuestionId = reader.GetSqlInt32(1).Value,
+                        Text = reader.GetSqlString(2).Value,
+                        Score = reader.GetSqlInt32(3).Value                        
+                    };
+                    list.Add(Answer);
+                }
+
+                return list;
+            }
+        }
+
 
         public List<Person> GetAllPersons()
         {
@@ -15,6 +74,7 @@ namespace DatingSite.Demo
 
             using (SqlConnection connection = new SqlConnection(conString))
             using (SqlCommand command = new SqlCommand(sql, connection))
+
             {
                 connection.Open();
 
@@ -30,7 +90,7 @@ namespace DatingSite.Demo
                         Name = reader.GetSqlString(1).Value,
                         Age = reader.GetSqlInt32(2).Value,
                         Gender = reader.GetSqlString(3).Value,
-                        Sexuality = reader.GetSqlString(4).Value                        
+                        Sexuality = reader.GetSqlString(4).Value
                     };
                     list.Add(person);
                 }
@@ -77,7 +137,7 @@ namespace DatingSite.Demo
             }
         }
 
-        public int ExecuteSqlAndReturnAffectedId (string sql, List<SqlParameter> parameterList)
+        public int ExecuteSqlAndReturnAffectedId(string sql, List<SqlParameter> parameterList)
         {
             int output;
             using (SqlConnection connection = new SqlConnection(conString))
