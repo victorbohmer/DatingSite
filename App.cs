@@ -80,7 +80,38 @@ namespace DatingSite.Demo
         //}
 
 
+        public void PageCreateQuestion()
+        {
+            UI.Header("Create new question");
 
+            string questionText = UI.GetSQLValidString("Enter question text");
+
+            Question newQuestion = new Question { Text = questionText };
+
+            AddAnswersToQuestion(newQuestion);
+
+        }
+
+        private void AddAnswersToQuestion(Question newQuestion)
+        {
+            while (true)
+            {
+                UI.Header("Add answers");
+                UI.WriteLine(newQuestion.ToString());
+
+                string answerText = UI.GetSQLValidString("Add another answer? (enter blank to exit) ");
+
+                if (answerText == "")
+                {
+                    if (newQuestion.Answers.Count < 2)
+                    {
+
+                    }
+
+                }
+
+            }
+        }
 
         //public void PageDeletePost()
         //{
