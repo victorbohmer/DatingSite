@@ -17,7 +17,7 @@ namespace DatingSite.Demo
             return output;
         }
 
-        public string QuestionText()
+        public string ShowAllAnswers()
         {
             string output = string.Join('\n', Answers.Select(x => x.ToString()));
             return output;

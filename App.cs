@@ -61,16 +61,13 @@ namespace DatingSite.Demo
         public void PageDeletePerson()
         {
             UI.Header("Delete Person");
-            Person oldPerson = new Person();
             ShowAllPersons();
             List<Person> list = _dataAccess.GetAllPersons();
-            UI.GetNumericInput("Write the person ID that you want to delete: ");
-            oldPerson.Id = int.Parse(Console.ReadLine());
-            oldPerson.Name = UI.GetSQLValidString("What is your name? ");
-            var person = list.Where(x => x.Id == oldPerson.Id).Single();
-            _dataAccess.DeletePerson(oldPerson);
+            int id = UI.GetNumericInput("Write the person ID that you want to delete: ");
+            var personToDelete = list.Where(x => x.Id == id).Single();
+            _dataAccess.DeletePerson(personToDelete);
 
-            ReturnToMenuAfterKeyPress($"{oldPerson.Name.ToUpper()} WITH PERSON ID {personId} HAS BEEN REGISTERED!");
+            ReturnToMenuAfterKeyPress($"{personToDelete.Name.ToUpper()} HAS BEEN DELETED.");
         }
 
         public void PageCreateQuestion()
@@ -94,7 +91,7 @@ namespace DatingSite.Demo
                 UI.Header("Add answers");
                 UI.WriteLine(newQuestion.ToString());
                 UI.WriteLine(Answer.HeaderRow(), ConsoleColor.Blue);
-                UI.WriteLine(newQuestion.QuestionText());
+                UI.WriteLine(newQuestion.ShowAllAnswers());
                 UI.WriteLine();
 
                 string answerText = UI.GetSQLValidString("Add another answer? (enter blank to exit) ");
@@ -108,7 +105,7 @@ namespace DatingSite.Demo
                 }
                 else
                 {
-                    int answerScore = UI.GetNumericInput("Enter the weighted score of the answer that is used to compare it when calculating match%: ");
+                    int answerScore = UI.GetNumericInput("Enter the weighted score of the answer (used to compare it when calculating match%): ");
                     Answer newAnswer = new Answer { Text = answerText, Score = answerScore };
                     newQuestion.Answers.Add(newAnswer);
                 }
@@ -212,6 +209,8 @@ namespace DatingSite.Demo
             //WriteLine("Tack för att du använt Bloggy");
             Console.ReadKey();
         }
+
         
+
     }
 }
