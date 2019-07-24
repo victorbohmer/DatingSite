@@ -26,7 +26,7 @@ namespace DatingSite.Demo
         {
             Console.WriteLine(returnText);
 
-            Console.WriteLine("Press any key to return to the main menu");
+            Console.WriteLine("\n Press any key to return to the main menu");
             Console.ReadKey();
             _menu.MainMenu();
         }
@@ -44,42 +44,34 @@ namespace DatingSite.Demo
             ShowAllPersons();
 
             Person newPerson = new Person();
-            Console.WriteLine("What is your name? ");
-            newPerson.Name = Console.ReadLine().ToLower().Trim();
-            Console.WriteLine("How old are you? ");
-            newPerson.Age = int.Parse(Console.ReadLine().ToLower().Trim());
-            Console.WriteLine("What is your gender? ");
-            newPerson.Gender = Console.ReadLine().ToLower().Trim();
-            Console.WriteLine("What is yoour sexuality? ");
-            newPerson.Sexuality = Console.ReadLine().ToLower().Trim();
-                        
+
+            Console.WriteLine();
+            
+            newPerson.Name = UI.GetSQLValidString("What is your name? ");
+            newPerson.Age = UI.GetNumericInput("How old are you? ");
+            newPerson.Gender = UI.GetSQLValidString("What is your gender? ");        
+            newPerson.Sexuality = UI.GetSQLValidString("What is your sexuality? ");
+
             _dataAccess.AddPerson( newPerson);         
 
-            ReturnToMenuAfterKeyPress("Person has been registered");
-            //  _currentPage = MainMenu;
+            ReturnToMenuAfterKeyPress($"{newPerson.Name.ToUpper()} HAS BEEN REGISTERED!");            
         }
 
-        //public void PageAddTag()
-        //{
-        //    Header("AdderaTag");
-        //    ShowAllBlogPostsBrief();
-        //    Console.ForegroundColor = ConsoleColor.Green;
-        //    Console.WriteLine("Tags");
-        //    ShowAllTagsBrief();
 
-        //    Write("Vad är taggen? ");
-        //    string nyTag = Console.ReadLine();
+        public void PageDeletePerson()
+        {
+            UI.Header("Delete Person");
+            Person oldPerson = new Person();
+            ShowAllPersons();
+            List<Person> list = _dataAccess.GetAllPersons();
+            UI.GetNumericInput("Write the person ID that you want to delete: ");
+            oldPerson.Id = int.Parse(Console.ReadLine());
+            oldPerson.Name = UI.GetSQLValidString("What is your name? ");
+            var person = list.Where(x => x.Id == oldPerson.Id).Single();
+            _dataAccess.DeletePerson(oldPerson);
 
-        //    List<BlogPost> list = _dataAccess.GetAllBlogPostsBrief();
-
-        //    _dataAccess.AddTag(nyTag);
-
-        //    Console.ForegroundColor = ConsoleColor.Green;
-        //    Console.WriteLine("Taggen har lagts till");
-        //    Console.ReadKey();
-        //    _currentPage = Page.MainMenu;
-        //}
-
+            ReturnToMenuAfterKeyPress($"{oldPerson.Name.ToUpper()} WITH PERSON ID {personId} HAS BEEN REGISTERED!");
+        }
 
         public void PageCreateQuestion()
         {
@@ -130,7 +122,7 @@ namespace DatingSite.Demo
         //    Console.WriteLine("Du valde att radera den här posten");
         //    Console.ForegroundColor = ConsoleColor.Red;
         //    var post = list.Where(x => x.Id == postId).Single();
-        //    Console.WriteLine($"{post.Id}  " + post.Title + post.Author);           
+        //    Console.WriteLine($"{post.Id}  " + post.Title + post.Author);
         //    Console.ResetColor();
 
         //    _dataAccess.DeleteBlogpost(postId);
@@ -201,28 +193,15 @@ namespace DatingSite.Demo
                 Console.WriteLine(person.ToString());
             }
 
-            WriteLine();
+            UI.WriteLine();
         }
 
         private void PageEndProgram()
         {
-            Header("Avsluta");
-            WriteLine("Tack för att du använt Bloggy");
+            //Header("Avsluta");
+            //WriteLine("Tack för att du använt Bloggy");
             Console.ReadKey();
         }
-        private void Header(string text)
-        {
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine();
-            Console.WriteLine(text.ToUpper());
-            Console.WriteLine();
-        }
-
-        private void WriteLine(string text = "")
-        {
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine(text);
-        }
+        
     }
 }
