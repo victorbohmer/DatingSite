@@ -80,6 +80,9 @@ namespace DatingSite.Demo
 
             AddAnswersToQuestion(newQuestion);
 
+            _dataAccess.AddQuestion(newQuestion);
+            _dataAccess.AddAnswers(newQuestion);
+
             ReturnToMenuAfterKeyPress("Question has been saved");
 
         }

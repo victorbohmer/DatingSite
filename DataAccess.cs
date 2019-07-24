@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 
 namespace DatingSite.Demo
@@ -62,7 +63,6 @@ namespace DatingSite.Demo
             ExecuteSql(sql, parameterList);
         }
 
-
         public void ExecuteSql(string sql, List<SqlParameter> parameterList)
         {
             using (SqlConnection connection = new SqlConnection(conString))
@@ -74,6 +74,33 @@ namespace DatingSite.Demo
                     command.Parameters.Add(parameter);
                 }
                 command.ExecuteNonQuery();
+            }
+        }
+
+        internal void AddQuestion(Question newQuestion)
+        {
+            string sql = @"INSERT INTO Question (Text)
+                        OUTPUT Inserted.Id
+                        VALUES (@Text)";
+            List<SqlParameter> parameterList = new List<SqlParameter>();
+            parameterList.Add(new SqlParameter("Text", newQuestion.Text));
+
+            int createdId = ExecuteSqlAndReturnAffectedId(sql, parameterList);
+            newQuestion.Id = createdId;
+        }
+
+        internal void AddAnswers(Question newQuestion)
+        {
+            foreach (Answer answer in newQuestion.Answers)
+            {
+                string sql = @"INSERT INTO Answer (QuestionId, Text, Score) 
+                        VALUES (@QuestionId, @Text, @Score)";
+                List<SqlParameter> parameterList = new List<SqlParameter>();
+                parameterList.Add(new SqlParameter("QuestionId", newQuestion.Id));
+                parameterList.Add(new SqlParameter("Text", answer.Text));
+                parameterList.Add(new SqlParameter("Score", answer.Score));
+
+                ExecuteSql(sql, parameterList);
             }
         }
 

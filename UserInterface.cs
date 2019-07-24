@@ -72,7 +72,7 @@ namespace DatingSite.Demo
         public static string NormalCapitalization(string input)
         {
             if (String.IsNullOrEmpty(input))
-                throw new ArgumentException("ARGH!");
+                return "";
             return input.First().ToString().ToUpper() + input.Substring(1).ToLower();
         }
     }
