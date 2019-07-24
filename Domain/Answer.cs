@@ -19,7 +19,7 @@
         public static string HeaderRow()
         {
             string output = "";
-            output += "Text".PadRight(30);
+            output += "Answer".PadRight(30);
             output += "Score";
             return output;
         }
