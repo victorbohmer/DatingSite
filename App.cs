@@ -25,6 +25,8 @@ namespace DatingSite.Demo
         private void ReturnToMenuAfterKeyPress(string returnText)
         {
             Console.WriteLine(returnText);
+
+            Console.WriteLine("Press any key to return to the main menu");
             Console.ReadKey();
             _menu.MainMenu();
         }
@@ -37,25 +39,24 @@ namespace DatingSite.Demo
 
         public void PageAddPerson()
         {
-            UI.Header("Add post");
-            ReturnToMenuAfterKeyPress("Back to menu?");
+            UI.Header("Add Person");
+                   
+            ShowAllPersons();
 
-            //Header("Addera");
-            //ShowAllBlogPostsBrief();
-  
-            //Write("Vad är titeln? ");
-            //string nyTitle = Console.ReadLine();
-            //Write("Vem är authorn? ");
-            //string nyAuthor = Console.ReadLine();
-            
-            //List<BlogPost> list = _dataAccess.GetAllBlogPostsBrief();
+            Person newPerson = new Person();
+            Console.WriteLine("What is your name? ");
+            newPerson.Name = Console.ReadLine();
+            Console.WriteLine("How old are you? ");
+            newPerson.Age = int.Parse(Console.ReadLine());
+            Console.WriteLine("What is your gender? ");
+            newPerson.Gender = Console.ReadLine();
+            Console.WriteLine("What is yoour sexuality? ");
+            newPerson.Sexuality = Console.ReadLine();
+                        
+            _dataAccess.AddPerson( newPerson);         
 
-            //_dataAccess.AddBlogpost(nyTitle, nyAuthor);
-
-            //Console.ForegroundColor = ConsoleColor.Green;
-            //Console.WriteLine("Raden har lagts till");
-            //Console.ReadKey();
-            //_currentPage = Page.MainMenu;
+            ReturnToMenuAfterKeyPress("Person has been registered");
+            //  _currentPage = MainMenu;
         }
 
         //public void PageAddTag()
@@ -191,12 +192,6 @@ namespace DatingSite.Demo
         {
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine(text);
-        }
-
-        private void Write(string text)
-        {
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.Write(text);
         }
     }
 }
