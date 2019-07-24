@@ -54,7 +54,7 @@ namespace DatingSite.Demo
 
             _dataAccess.AddPerson( newPerson);         
 
-            ReturnToMenuAfterKeyPress($"{newPerson.Name.ToUpper()} HAS BEEN REGISTERED!");            
+            ReturnToMenuAfterKeyPress($"{newPerson.Name} has been registred!");            
         }
 
 
@@ -67,7 +67,7 @@ namespace DatingSite.Demo
             var personToDelete = list.Where(x => x.Id == id).Single();
             _dataAccess.DeletePerson(personToDelete);
 
-            ReturnToMenuAfterKeyPress($"{personToDelete.Name.ToUpper()} HAS BEEN DELETED.");
+            ReturnToMenuAfterKeyPress($"{personToDelete.Name} has been deleted!");
         }
 
         public void PageCreateQuestion()
@@ -84,7 +84,6 @@ namespace DatingSite.Demo
             _dataAccess.AddAnswers(newQuestion);
 
             ReturnToMenuAfterKeyPress("Question has been saved");
-
         }
 
         private void AddAnswersToQuestion(Question newQuestion)
@@ -108,11 +107,10 @@ namespace DatingSite.Demo
                 }
                 else
                 {
-                    int answerScore = UI.GetNumericInput("Enter the weighted score of the answer (used to compare it when calculating match%): ");
+                    int answerScore = UI.GetNumericInput("Enter the weighted score of the answer (It is used for comparing when calculating match%): ");
                     Answer newAnswer = new Answer { Text = answerText, Score = answerScore };
                     newQuestion.Answers.Add(newAnswer);
                 }
-
             }
         }
 
