@@ -160,19 +160,13 @@ namespace DatingSite.Demo
 
         private void ShowAllPersons()
         {
-            string headerText = "USERS: ";
-            UI.WriteLine(headerText, ConsoleColor.Blue);
+            
+            UI.WriteLine(Person.HeaderRow(), ConsoleColor.Blue);
             List<Person> personList = _dataAccess.GetAllPersons();
 
             foreach (Person person in personList)
             {
-                string personInfo = "";
-                personInfo += person.Id.ToString().PadRight(8);
-                personInfo += person.Name.PadRight(10);
-                personInfo += person.Age.ToString().PadRight(10);
-                personInfo += person.Gender.PadRight(10);
-                personInfo += person.Sexuality.PadRight(10);
-                Console.WriteLine(personInfo);
+                Console.WriteLine(person.ToString());
             }
 
             WriteLine();

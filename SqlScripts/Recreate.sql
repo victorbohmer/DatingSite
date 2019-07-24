@@ -4,9 +4,9 @@ GO
 CREATE DATABASE [DatingSite]
  CONTAINMENT = NONE
  ON  PRIMARY 
-( NAME = N'DatingSite', FILENAME = N'C:\Users\Muss Mesmari\DatingSite.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+( NAME = N'DatingSite', FILENAME = N'C:\Database\DatingSite.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
  LOG ON 
-( NAME = N'DatingSite_log', FILENAME = N'C:\Users\Muss Mesmari\DatingSite_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+( NAME = N'DatingSite_log', FILENAME = N'C:\Database\DatingSite_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
 GO
 ALTER DATABASE [DatingSite] SET COMPATIBILITY_LEVEL = 130
 GO
