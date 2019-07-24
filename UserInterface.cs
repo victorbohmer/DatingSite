@@ -24,10 +24,11 @@ namespace DatingSite.Demo
             Console.ResetColor();
         }
 
-        public void Write(string text)
+        public void Write(string text, ConsoleColor color = ConsoleColor.White)
         {
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write(text);
+            Console.ResetColor();
         }
 
         internal int GetNumericInput(string prompt)
@@ -51,7 +52,7 @@ namespace DatingSite.Demo
 
         internal string GetSQLValidString(string prompt, int maxLength = 49)
         {
-            Write(prompt);
+            Write(prompt, ConsoleColor.Green);
             while (true)
             {
                 string newTitle = Console.ReadLine();
