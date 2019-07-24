@@ -56,6 +56,19 @@ namespace DatingSite.Demo
             }
         }
 
+        public void DeletePerson(Person oldPerson)
+        {
+            var sql = "DELETE FROM Person WHERE Id=@Id ";
+
+            using (SqlConnection connection = new SqlConnection(conString))
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                connection.Open();
+                command.Parameters.Add(new SqlParameter("Id", oldPerson.Id));
+                command.ExecuteNonQuery();
+            }
+        }
+
         //public List<BlogPost> GetAllBlogPostsBrief()
         //{
         //    var sql = @"SELECT [Id], [Author], [Title]
@@ -129,19 +142,6 @@ namespace DatingSite.Demo
         //        connection.Open();
         //        command.Parameters.Add(new SqlParameter("Id", id));
         //        command.Parameters.Add(new SqlParameter("Title", title));
-        //        command.ExecuteNonQuery();
-        //    }
-        //}
-
-        //public void DeleteBlogpost(int id)
-        //{
-        //    var sql = "DELETE FROM BlogPost WHERE ID=@id ";
-
-        //    using (SqlConnection connection = new SqlConnection(conString))
-        //    using (SqlCommand command = new SqlCommand(sql, connection))
-        //    {
-        //        connection.Open();
-        //        command.Parameters.Add(new SqlParameter("Id", id));
         //        command.ExecuteNonQuery();
         //    }
         //}

@@ -26,18 +26,18 @@ namespace DatingSite.Demo
 
         public void Write(string text, ConsoleColor color = ConsoleColor.White)
         {
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = color;
             Console.Write(text);
             Console.ResetColor();
         }
 
         internal int GetNumericInput(string prompt)
         {
-            Write(prompt);
+            Write(prompt, ConsoleColor.Green);
 
             while (true)
             {
-                var input = Console.ReadLine();
+                var input = Console.ReadLine().Trim().ToLower();
                 try
                 {
                     int inputNumeric = int.Parse(input);
@@ -45,7 +45,7 @@ namespace DatingSite.Demo
                 }
                 catch (FormatException)
                 {
-                    Write("\nVänligen mata in en siffra: ");
+                    Write("\nPlease enter a whole number ", ConsoleColor.Red);
                 }
             }
         }
@@ -55,12 +55,12 @@ namespace DatingSite.Demo
             Write(prompt, ConsoleColor.Green);
             while (true)
             {
-                string newTitle = Console.ReadLine();
+                string newTitle = Console.ReadLine().Trim().ToLower();
 
                 if (newTitle.Contains('\''))
-                    Write("Titel får ej innehålla \' ");
+                    Write("It should not contain får \' ", ConsoleColor.Red);
                 else if (newTitle.Length > maxLength)
-                    Write($"Titel får inte vara längre än {maxLength} tecken ");
+                    Write($"It should not contain mora than {maxLength} letter ", ConsoleColor.Red);
                 else
                 {
                     return newTitle;
