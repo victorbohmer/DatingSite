@@ -85,11 +85,13 @@ namespace DatingSite.Demo
         {
             UI.Header("Create new question");
 
-            string questionText = UI.GetSQLValidString("Enter question text");
+            string questionText = UI.GetSQLValidString("Enter question text: ");
 
             Question newQuestion = new Question { Text = questionText };
 
             AddAnswersToQuestion(newQuestion);
+
+            ReturnToMenuAfterKeyPress("Question has been saved");
 
         }
 
@@ -99,16 +101,24 @@ namespace DatingSite.Demo
             {
                 UI.Header("Add answers");
                 UI.WriteLine(newQuestion.ToString());
+                UI.WriteLine(Answer.HeaderRow(), ConsoleColor.Blue);
+                UI.WriteLine(newQuestion.QuestionText());
+                UI.WriteLine();
 
                 string answerText = UI.GetSQLValidString("Add another answer? (enter blank to exit) ");
 
                 if (answerText == "")
                 {
                     if (newQuestion.Answers.Count < 2)
-                    {
-
-                    }
-
+                        UI.Write("Questions must have at least two answers", ConsoleColor.Red);
+                    else
+                        break;
+                }
+                else
+                {
+                    int answerScore = UI.GetNumericInput("Enter the weighted score of the answer that is used to compare it when calculating match%: ");
+                    Answer newAnswer = new Answer { Text = answerText, Score = answerScore };
+                    newQuestion.Answers.Add(newAnswer);
                 }
 
             }
