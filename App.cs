@@ -11,6 +11,7 @@ namespace DatingSite.Demo
     {
         DataAccess _dataAccess = new DataAccess();
         Menu _menu= new Menu();
+        UserInterface UI = new UserInterface();
 
         public void Run()
         {
@@ -29,14 +30,14 @@ namespace DatingSite.Demo
         }
         public void PageMainMenu()
         {
-            Console.WriteLine("Main menu");
+            UI.Header("Main menu");
 
             _menu.SwitchPageByUserInput();
         }
 
         public void PageAddPerson()
         {
-            Console.WriteLine("Add post");
+            UI.Header("Add post");
 
             ReturnToMenuAfterKeyPress("Back to menu?");
             //Header("Addera");
