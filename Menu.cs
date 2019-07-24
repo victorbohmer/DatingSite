@@ -32,8 +32,14 @@ namespace DatingSite.Demo
             NewMenuOption(app.PageAddPerson, ConsoleKey.B, "b) Add person");
             NewMenuOption(app.PageCreateQuestion, ConsoleKey.C, "c) Create question");
             NewMenuOption(app.PageDeletePerson, ConsoleKey.D, "d) Delete person");
+<<<<<<< HEAD
 
             NewMenuOption(app.PageCheckMatch, ConsoleKey.F, "f) Se matchning");
+=======
+            NewMenuOption(app.PageAnswerQuestions, ConsoleKey.E, "e) Answer questions");
+            
+
+>>>>>>> 38abff01522da96c1423a33bcd1f0b4c48ee0084
         }
         private void NewMenuOption(Action menuAction, ConsoleKey hotkey, string prompt)
         {

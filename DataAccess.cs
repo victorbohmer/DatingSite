@@ -9,6 +9,65 @@ namespace DatingSite.Demo
     {
         private const string conString = "Server=(localdb)\\mssqllocaldb; Database=DatingSite";
 
+        
+        public List<Question> GetAllQuestions()
+        {
+            var sql = @"SELECT [Id], [Text]
+                        FROM Question";
+
+            using (SqlConnection connection = new SqlConnection(conString))
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                var list = new List<Question>();
+
+                while (reader.Read())
+                {
+                    var Question = new Question
+                    {
+                        Id = reader.GetSqlInt32(0).Value,
+                        Text = reader.GetSqlString(2).Value,            
+                    };
+                    list.Add(Question);
+                }
+                return list;
+            }
+        }
+
+
+        public List<Answer> GetAllAnswers()
+        {
+            var sql = @"SELECT [Id], [QuestionId], [Text], [Score]
+                        FROM Answer";
+
+            using (SqlConnection connection = new SqlConnection(conString))
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                var list = new List<Answer>();
+
+                while (reader.Read())
+                {
+                    var Answer = new Answer
+                    {
+                        Id = reader.GetSqlInt32(0).Value,
+                        QuestionId = reader.GetSqlInt32(1).Value,
+                        Text = reader.GetSqlString(2).Value,
+                        Score = reader.GetSqlInt32(3).Value                        
+                    };
+                    list.Add(Answer);
+                }
+
+                return list;
+            }
+        }
+
 
         public List<Person> GetAllPersons()
         {
@@ -17,6 +76,7 @@ namespace DatingSite.Demo
 
             using (SqlConnection connection = new SqlConnection(conString))
             using (SqlCommand command = new SqlCommand(sql, connection))
+
             {
                 connection.Open();
 
@@ -78,6 +138,7 @@ namespace DatingSite.Demo
             }
         }
 
+<<<<<<< HEAD
         internal void AddQuestion(Question newQuestion)
         {
             string sql = @"INSERT INTO Question (Text)
@@ -105,6 +166,8 @@ namespace DatingSite.Demo
             }
         }
 
+=======
+>>>>>>> 38abff01522da96c1423a33bcd1f0b4c48ee0084
         public int ExecuteSqlAndReturnAffectedId(string sql, List<SqlParameter> parameterList)
         {
             int output;
