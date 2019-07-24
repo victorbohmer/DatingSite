@@ -45,13 +45,13 @@ namespace DatingSite.Demo
 
             Person newPerson = new Person();
             Console.WriteLine("What is your name? ");
-            newPerson.Name = Console.ReadLine();
+            newPerson.Name = Console.ReadLine().ToLower().Trim();
             Console.WriteLine("How old are you? ");
-            newPerson.Age = int.Parse(Console.ReadLine());
+            newPerson.Age = int.Parse(Console.ReadLine().ToLower().Trim());
             Console.WriteLine("What is your gender? ");
-            newPerson.Gender = Console.ReadLine();
+            newPerson.Gender = Console.ReadLine().ToLower().Trim();
             Console.WriteLine("What is yoour sexuality? ");
-            newPerson.Sexuality = Console.ReadLine();
+            newPerson.Sexuality = Console.ReadLine().ToLower().Trim();
                         
             _dataAccess.AddPerson( newPerson);         
 
