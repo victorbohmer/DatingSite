@@ -10,51 +10,55 @@ namespace DatingSite.Demo
     class App
     {
         DataAccess _dataAccess = new DataAccess();
-        Page _currentPage = Page.MainMenu;
+        Menu _menu;
 
         public void Run()
         {
-            while (true)
+            _menu.SetupAppMenu(this);
+            while (!_menu.Quit)
             {
-                switch (_currentPage)
-                {
-                    case Page.MainMenu:
-                        PageMainMenu();
-                        break;
-                    case Page.EndProgram:
-                        PageEndProgram();
-                        return;
-                }
+                _menu.RefreshMenu();
             }
         }
 
-        private void PageMainMenu()
+        private void ReturnToMenuAfterKeyPress(string returnText)
         {
-            Header("Huvudmeny");
-            ShowAllUsersAnswersBrief();
+            Console.WriteLine(returnText);
+            Console.ReadKey();
+            _menu.MainMenu();
+        }
+        public void PageMainMenu()
+        {
+            Console.WriteLine("Main menu");
 
-            WriteLine("Vad vill du göra?");
-            WriteLine("a) Gå till huvudmenyn");;
-            WriteLine("C) Avsluta programmet");
-            
+            _menu.SwitchPageByUserInput();
+        }
 
-            while (true)
-            {
-                ConsoleKey command = Console.ReadKey(true).Key;
+        public void PageAddPost()
+        {
+            Console.WriteLine("Add post");
 
-                switch (command)
-                {
-                    case ConsoleKey.A:
-                        _currentPage = Page.MainMenu;
-                        return;
-                    case ConsoleKey.B:
-                        _currentPage = Page.AnswerQuestions;
-                        return;
-                    case ConsoleKey.C:
-                        _currentPage = Page.EndProgram;
-                        return;
-                }
-            }
+            ReturnToMenuAfterKeyPress("Back to menu?");
+            //Header("Addera");
+            //ShowAllBlogPostsBrief();
+            //Console.ForegroundColor = ConsoleColor.Green;
+            //Console.WriteLine("Tags");
+            //ShowAllTagsBrief();
+
+            //Write("Vad är titeln? ");
+            //string nyTitle = Console.ReadLine();
+            //Write("Vem är authorn? ");
+            //string nyAuthor = Console.ReadLine();
+
+
+            //List<BlogPost> list = _dataAccess.GetAllBlogPostsBrief();
+
+            //_dataAccess.AddBlogpost(nyTitle, nyAuthor);
+
+            //Console.ForegroundColor = ConsoleColor.Green;
+            //Console.WriteLine("Raden har lagts till");
+            //Console.ReadKey();
+            //_currentPage = Page.MainMenu;
         }
 
         //public void PageAddTag()
@@ -79,29 +83,7 @@ namespace DatingSite.Demo
         //}
 
 
-        //public void PageAddPost()
-        //{
-        //    Header("Addera");
-        //    ShowAllBlogPostsBrief();
-        //    Console.ForegroundColor = ConsoleColor.Green;
-        //    Console.WriteLine("Tags");
-        //    ShowAllTagsBrief();
 
-        //    Write("Vad är titeln? ");
-        //    string nyTitle = Console.ReadLine();
-        //    Write("Vem är authorn? ");
-        //    string nyAuthor = Console.ReadLine();
-
-
-        //    List<BlogPost> list = _dataAccess.GetAllBlogPostsBrief();
-            
-        //    _dataAccess.AddBlogpost(nyTitle, nyAuthor);
-
-        //    Console.ForegroundColor = ConsoleColor.Green;
-        //    Console.WriteLine("Raden har lagts till");
-        //    Console.ReadKey();
-        //    _currentPage = Page.MainMenu;
-        //}
 
         //public void PageDeletePost()
         //{
@@ -184,16 +166,16 @@ namespace DatingSite.Demo
         //}
 
 
-        private void ShowAllUsersAnswersBrief()
-        {
-            List<UsersAnswers> list = _dataAccess.GetAllAnswersBrief();
+        //private void ShowAllUsersAnswersBrief()
+        //{
+        //    List<UsersAnswers> list = _dataAccess.GetAllAnswersBrief();
 
-            foreach (UsersAnswers answer in list)
-            {
-                WriteLine(answer.Id.ToString().PadRight(8) + answer.Answer1.PadRight(10) + answer.Answer2.PadRight(10) + answer.Answer3.PadRight(10) + answer.Answer4.PadRight(10) + answer.Answer5.PadRight(0));            }
+        //    foreach (UsersAnswers answer in list)
+        //    {
+        //        WriteLine(answer.Id.ToString().PadRight(8) + answer.Answer1.PadRight(10) + answer.Answer2.PadRight(10) + answer.Answer3.PadRight(10) + answer.Answer4.PadRight(10) + answer.Answer5.PadRight(0));            }
 
-            WriteLine();
-        }
+        //    WriteLine();
+        //}
 
 
         private void Header(string text)
