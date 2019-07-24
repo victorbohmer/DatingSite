@@ -44,30 +44,55 @@ namespace DatingSite.Demo
         {
             var sql = "INSERT INTO Person (Name, Age, Gender, Sexuality) VALUES (@Name, @Age, @Gender, @Sexuality)";
 
-            using (SqlConnection connection = new SqlConnection(conString))
-            using (SqlCommand command = new SqlCommand(sql, connection))
-            {
-                connection.Open();
-                command.Parameters.Add(new SqlParameter("Name", newPerson.Name));
-                command.Parameters.Add(new SqlParameter("Age", newPerson.Age));
-                command.Parameters.Add(new SqlParameter("Gender", newPerson.Gender));
-                command.Parameters.Add(new SqlParameter("Sexuality", newPerson.Sexuality));
-                command.ExecuteNonQuery();
-            }
+            List<SqlParameter> parameterList = new List<SqlParameter>();
+            parameterList.Add(new SqlParameter("Name", newPerson.Name));
+            parameterList.Add(new SqlParameter("Age", newPerson.Age));
+            parameterList.Add(new SqlParameter("Gender", newPerson.Gender));
+            parameterList.Add(new SqlParameter("Sexuality", newPerson.Sexuality));
+
+            ExecuteSql(sql, parameterList);
         }
 
         public void DeletePerson(Person oldPerson)
         {
             var sql = "DELETE FROM Person WHERE Id=@Id ";
+            List<SqlParameter> parameterList = new List<SqlParameter>();
+            parameterList.Add(new SqlParameter("Id", oldPerson.Id));
 
+            ExecuteSql(sql, parameterList);
+        }
+
+
+        public void ExecuteSql(string sql, List<SqlParameter> parameterList)
+        {
             using (SqlConnection connection = new SqlConnection(conString))
             using (SqlCommand command = new SqlCommand(sql, connection))
             {
                 connection.Open();
-                command.Parameters.Add(new SqlParameter("Id", oldPerson.Id));
+                foreach (SqlParameter parameter in parameterList)
+                {
+                    command.Parameters.Add(parameter);
+                }
                 command.ExecuteNonQuery();
             }
         }
+
+        public int ExecuteSqlAndReturnAffectedId (string sql, List<SqlParameter> parameterList)
+        {
+            int output;
+            using (SqlConnection connection = new SqlConnection(conString))
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                connection.Open();
+                foreach (SqlParameter parameter in parameterList)
+                {
+                    command.Parameters.Add(parameter);
+                }
+                output = (int)command.ExecuteScalar();
+            }
+            return output;
+        }
+
 
         //public List<BlogPost> GetAllBlogPostsBrief()
         //{
