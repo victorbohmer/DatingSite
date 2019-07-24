@@ -40,7 +40,21 @@ namespace DatingSite.Demo
             }
         }
 
+        public void AddPerson(Person newPerson)
+        {
+            var sql = "INSERT INTO Person (Name, Age, Gender, Sexuality) VALUES (@Name, @Age, @Gender, @Sexuality)";
 
+            using (SqlConnection connection = new SqlConnection(conString))
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                connection.Open();
+                command.Parameters.Add(new SqlParameter("Name", newPerson.Name));
+                command.Parameters.Add(new SqlParameter("Age", newPerson.Age));
+                command.Parameters.Add(new SqlParameter("Gender", newPerson.Gender));
+                command.Parameters.Add(new SqlParameter("Sexuality", newPerson.Sexuality));
+                command.ExecuteNonQuery();
+            }
+        }
 
         //public List<BlogPost> GetAllBlogPostsBrief()
         //{
@@ -103,20 +117,7 @@ namespace DatingSite.Demo
         //    }
         //}
 
-        //public void AddBlogpost(string title, string author)
-        //{
-        //    var sql = "INSERT INTO BlogPost (Author, Title) VALUES (@title,@author)";
 
-        //    using (SqlConnection connection = new SqlConnection(conString))
-        //    using (SqlCommand command = new SqlCommand(sql, connection))
-        //    {
-        //        connection.Open();
-        //       // command.Parameters.Add(new SqlParameter("Id", id));
-        //        command.Parameters.Add(new SqlParameter("Title", title));
-        //        command.Parameters.Add(new SqlParameter("Author", author));
-        //        command.ExecuteNonQuery();
-        //    }
-        //}
 
         //public void UpdateBlogpost(int id, string title)
         //{

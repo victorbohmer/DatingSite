@@ -10,7 +10,7 @@ namespace DatingSite.Demo
     class App
     {
         DataAccess _dataAccess = new DataAccess();
-        Menu _menu= new Menu();
+        Menu _menu = new Menu();
         UserInterface UI = new UserInterface();
 
         public void Run()
@@ -31,27 +31,23 @@ namespace DatingSite.Demo
         public void PageMainMenu()
         {
             UI.Header("Main menu");
-
+            ShowAllPersons();
             _menu.SwitchPageByUserInput();
         }
 
         public void PageAddPerson()
         {
             UI.Header("Add post");
-
             ReturnToMenuAfterKeyPress("Back to menu?");
+
             //Header("Addera");
             //ShowAllBlogPostsBrief();
-            //Console.ForegroundColor = ConsoleColor.Green;
-            //Console.WriteLine("Tags");
-            //ShowAllTagsBrief();
-
+  
             //Write("Vad är titeln? ");
             //string nyTitle = Console.ReadLine();
             //Write("Vem är authorn? ");
             //string nyAuthor = Console.ReadLine();
-
-
+            
             //List<BlogPost> list = _dataAccess.GetAllBlogPostsBrief();
 
             //_dataAccess.AddBlogpost(nyTitle, nyAuthor);
@@ -147,12 +143,7 @@ namespace DatingSite.Demo
         //    _currentPage = Page.MainMenu;
         //}
 
-        private void PageEndProgram()
-        {
-            Header("Avsluta");
-            WriteLine("Tack för att du använt Bloggy");
-            Console.ReadKey();
-        }
+
 
         //private void ShowAllBlogPostsBrief()
         //{
@@ -167,21 +158,32 @@ namespace DatingSite.Demo
         //}
 
 
-        private void ShowAllUsersAnswersBrief()
+        private void ShowAllPersons()
         {
-            //List<UsersAnswers> list = _dataAccess.GetAllPersons();
-        //private void ShowAllUsersAnswersBrief()
-        //{
-        //    List<UsersAnswers> list = _dataAccess.GetAllAnswersBrief();
+            string headerText = "USERS: ";
+            UI.WriteLine(headerText, ConsoleColor.Blue);
+            List<Person> personList = _dataAccess.GetAllPersons();
 
-        //    foreach (UsersAnswers answer in list)
-        //    {
-        //        WriteLine(answer.Id.ToString().PadRight(8) + answer.Answer1.PadRight(10) + answer.Answer2.PadRight(10) + answer.Answer3.PadRight(10) + answer.Answer4.PadRight(10) + answer.Answer5.PadRight(0));            }
+            foreach (Person person in personList)
+            {
+                string personInfo = "";
+                personInfo += person.Id.ToString().PadRight(8);
+                personInfo += person.Name.PadRight(10);
+                personInfo += person.Age.ToString().PadRight(10);
+                personInfo += person.Gender.PadRight(10);
+                personInfo += person.Sexuality.PadRight(10);
+                Console.WriteLine(personInfo);
+            }
 
-        //    WriteLine();
+            WriteLine();
         }
 
-
+        private void PageEndProgram()
+        {
+            Header("Avsluta");
+            WriteLine("Tack för att du använt Bloggy");
+            Console.ReadKey();
+        }
         private void Header(string text)
         {
             Console.Clear();
