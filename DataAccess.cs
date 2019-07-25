@@ -213,10 +213,11 @@ namespace DatingSite.Demo
         }
         public List<Person> GetAllPersonsWithAnswers()
         {
-            var sql = @"SELECT Person.Id, Name, Age, Gender, Sexuality, GivenAnswer.QuestionId, GivenAnswer.QuestionWeight, GivenAnswer.Score, DesiredAnswer.Score, Important
+            var sql = @"SELECT Person.Id, Name, Age, Gender, Sexuality, GivenAnswer.QuestionId, Question.Weight, GivenAnswer.Score, DesiredAnswer.Score, Important
                         FROM UserAnswerForQuestion LEFT JOIN Person ON UserId = Person.Id
                         LEFT JOIN Answer AS GivenAnswer ON GivenAnswerId = GivenAnswer.Id
-                        LEFT JOIN Answer AS DesiredAnswer ON DesiredAnswerId = DesiredAnswer.Id";
+                        LEFT JOIN Answer AS DesiredAnswer ON DesiredAnswerId = DesiredAnswer.Id
+                        LEFT JOIN Question ON GivenAnswer.QuestionId = Question.Id";
 
             using (SqlConnection connection = new SqlConnection(conString))
             using (SqlCommand command = new SqlCommand(sql, connection))

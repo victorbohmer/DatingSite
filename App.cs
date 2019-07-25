@@ -228,9 +228,6 @@ namespace DatingSite.Demo
                 Console.WriteLine(person.ToString());
             }
             UI.WriteLine();
-<<<<<<< HEAD
-        } 
-=======
         }
 
 
@@ -247,43 +244,23 @@ namespace DatingSite.Demo
             UI.WriteLine();
         }
 
-        public void Logo(int length = 25, int height = 12)
+        private Person GetExistingPerson(string prompt)
         {
-            for (int i = 0; i < height; i++)
+            List<Person> blogList = _dataAccess.GetAllBlogPostsBrief();
+            while (true)
             {
-                for (int j = 0; j < length; j++)
+                int blogPostIdToEdit = UI.GetNumericInput(prompt);
+                try
                 {
-                    if (i == 0)
-                    {
-                        if (j == 0 || j == height
-                                || j == length - 1)
-                        {
-                            Console.Write("*");
-                        }
-                        else
-                        {
-                            Console.Write(" ");
-                        }
-                    }
-
-                    else if (i == height - 1)
-                    {
-                        Console.Write("*");
-                    }
-
-                    else if ((j < i || j > height - i) &&
-                                    (j < height + i ||
-                                    j >= length - i))
-                        Console.Write("#");
-                    else
-                        Console.Write(" ");
+                    return blogList.Where(x => x.Id == blogPostIdToEdit).First();
                 }
-
-                Console.WriteLine();
+                catch
+                {
+                    UI.WriteLine($"Kunde inte hitta blogpost med id {blogPostIdToEdit}");
+                }
             }
-
         }
 
->>>>>>> f7dadd9ee7109a3085f219b178d49d3f00115894
+        
     }
 }
