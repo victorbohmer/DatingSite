@@ -1,4 +1,5 @@
 ﻿
+using DatingSite.Demo.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -158,22 +159,48 @@ namespace DatingSite.Demo
             UI.Header("Answer Questions");
             List<Answer> answerList = _dataAccess.GetAllAnswers();
             List<Question> QuestionList = _dataAccess.GetAllQuestions();
-           // List<string> UserAnswerForQuestion = new List<string>();
+
+            UserAnswerForQuestion newUserAnswer = new UserAnswerForQuestion();
+
 
             foreach (Question question in QuestionList)
             {
+
                 UI.WriteLine($"{question.Text}");             
                 List<Answer> validAnswers = answerList.Where(x => x.QuestionId == question.Id).ToList();
                 for (int answerIndex = 0; answerIndex < validAnswers.Count; answerIndex++)
                 {                    
-                    UI.WriteLine($"{answerIndex + 1}: {validAnswers[answerIndex].Text}");
-                    
+                    UI.WriteLine($"{answerIndex + 1}: {validAnswers[answerIndex].Text}");                    
                 }
-                int userChoice = UI.GetNumericInput("Enter your answer here: ");
 
-                //UserAnswerForQuestion.Add(userAnswer);
+                int givenAnswerIndex = UI.GetNumericInput("Enter your answer here: ") - 1;
+                newUserAnswer.GivenAnswerId = validAnswers[givenAnswerIndex].Id;
+
+                int desiredAnswerIndex = UI.GetNumericInput("Enter your dream partner answer here: ");
+                newUserAnswer.DesiredAnswerId = validAnswers[desiredAnswerIndex].Id;
+
+                //newUserAnswer.GivenAnswerId = UI.GetNumericInput("Enter your answer here: ");
+                //newUserAnswer.DesiredAnswerId = UI.GetNumericInput("Enter your dream partner answer here: ");
+
+                char response = char.Parse(UI.GetSQLValidString("Choose how important your dream partner answer to you: " +
+                                                                "\nA for so importnat," +
+                                                                "\nB for not important" +
+                                                                "\nC for somewhat important\n").ToUpper());
+                switch (response)
+                {
+                    case 'A':
+                        newUserAnswer.Important = 1.00;
+                        break;
+                    case 'B':
+                        newUserAnswer.Important = 0.00;
+                        break;
+                    case 'C':
+                        newUserAnswer.Important = 0.50;
+                        break;
+                }
+                _dataAccess.AddUserAnswers(newUserAnswer);
+
             }
-
             ReturnToMenuAfterKeyPress("Thank you for answering the questions!");
         }
                

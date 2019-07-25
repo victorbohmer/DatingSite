@@ -182,7 +182,21 @@ namespace DatingSite.Demo
             }
         }
 
-        public int ExecuteSqlAndReturnAffectedId(string sql, List<SqlParameter> parameterList)
+        internal void AddUserAnswers(UserAnswerForQuestion newUserAnswer)
+        {
+            var sql = "INSERT INTO UserAnswerForQuestion (GivenAnswerId, Important, DesiredAnswerId) VALUES (@GivenAnswerId, @Important, @DesiredAnswerId)";
+            List<SqlParameter> parameterList = new List<SqlParameter>();
+            parameterList.Add(new SqlParameter("GivenAnswerId", newUserAnswer.GivenAnswerId));
+            parameterList.Add(new SqlParameter("Important", newUserAnswer.Important));
+            parameterList.Add(new SqlParameter("DesiredAnswerId", newUserAnswer.Important));
+
+            ExecuteSql(sql, parameterList);
+        }
+    
+
+
+
+    public int ExecuteSqlAndReturnAffectedId(string sql, List<SqlParameter> parameterList)
         {
             int output;
             using (SqlConnection connection = new SqlConnection(conString))
