@@ -12,5 +12,8 @@ namespace DatingSite.Demo.Domain
         public int DesiredAnswerScore{ get; set; }
         public double Important { get; set; }
 
+        public int GivenAnswerId { get; set; }
+        public int DesiredAnswerId { get; set; }
+
     }
 }
