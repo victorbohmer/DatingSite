@@ -1,5 +1,4 @@
-﻿// Här struntas i validering (för att förenkla koden)
-
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -94,7 +93,6 @@ namespace DatingSite.Demo
         public void PageCreateQuestion()
         {
             UI.Header("Create new question");
-            //ShowAllPersons();
             ShowAllQuestions();
             string questionText = UI.GetSQLValidString("Enter question text: ");
             Question newQuestion = new Question { Text = questionText };
@@ -108,24 +106,16 @@ namespace DatingSite.Demo
 
         public void PageDeleteQuestion()
         {
-            UI.Header("Delete a Question");
-            //ShowAllPersons();
+            UI.Header("Delete a Question");            
             ShowAllQuestions();
             List<Question> list1 = _dataAccess.GetAllQuestions();
-            List<Answer> list2 = _dataAccess.GetAllAnswers();
-            List<Answer> answersToDelete = new List<Answer>();
 
             int id = UI.GetNumericInput("Write the question ID that you want to delete: ");
             var questionToDelete = list1.Where(x => x.Id == id).Single();
-            answersToDelete = list2.Where(y => y.QuestionId == id).ToList();
 
-            
-            for (int i = 0; i < answersToDelete.Count; i++)
-            {
-                _dataAccess.DeleteAnswer(answersToDelete[i]);
-            }
+            _dataAccess.DeleteAnswer(questionToDelete);
             _dataAccess.DeleteQuestion(questionToDelete);
-            ReturnToMenuAfterKeyPress($"{questionToDelete.Text} has been deleted!");
+           ReturnToMenuAfterKeyPress($"{questionToDelete.Text} has been deleted!");
         }
 
         public void PageCheckMatch()
@@ -184,66 +174,7 @@ namespace DatingSite.Demo
 
             ReturnToMenuAfterKeyPress("Thank you for answering the questions!");
         }
-
-
-        //public void PageDeletePost()
-        //{
-        //    Header("Radera");
-        //    ShowAllBlogPostsBrief();
-        //    ShowAllTagsBrief();
-
-        //    List<BlogPost> list = _dataAccess.GetAllBlogPostsBrief();
-
-        //    Write("Vilken bloggpost vill du radera? ");
-        //    int postId = int.Parse(Console.ReadLine());
-
-        //    Console.WriteLine("Du valde att radera den här posten");
-        //    Console.ForegroundColor = ConsoleColor.Red;
-        //    var post = list.Where(x => x.Id == postId).Single();
-        //    Console.WriteLine($"{post.Id}  " + post.Title + post.Author);
-        //    Console.ResetColor();
-
-        //    _dataAccess.DeleteBlogpost(postId);
-
-        //    Console.ForegroundColor = ConsoleColor.Red;
-        //    Console.WriteLine("Den här posten finns inte längre! ");
-        //    Console.ResetColor();
-
-        //    Console.ReadKey();
-        //    _currentPage = Page.MainMenu;
-        //}
-
-
-
-        //public void PageUpdatePost()
-        //{
-        //    Header("Uppdatera");
-        //    ShowAllBlogPostsBrief();
-        //    Console.ForegroundColor = ConsoleColor.Green;
-        //    Console.WriteLine("Tags");
-        //    ShowAllTagsBrief();
-        //    List<BlogPost> list = _dataAccess.GetAllBlogPostsBrief();
-
-        //    Write("Vilken bloggpost vill du uppdatera? ");
-        //    int postId = int.Parse(Console.ReadLine());            
-
-        //    Console.WriteLine("Du valde att uppdatera den här posten");
-        //    Console.ForegroundColor = ConsoleColor.Red;
-        //    var post = list.Where(x => x.Id == postId).Single();
-        //    Console.WriteLine($"{post.Id}  " + post.Title + post.Author);
-        //    Console.ResetColor();
-
-        //    Write("Uppdatera titeln? ");
-        //    string nyTitle = Console.ReadLine();
-        //    _dataAccess.UpdateBlogpost(postId, nyTitle);
-
-        //    Console.ForegroundColor = ConsoleColor.Green;
-        //    Console.WriteLine("Raden har uppdaterat");
-        //    Console.ResetColor();
-
-        //    Console.ReadKey();
-        //    _currentPage = Page.MainMenu;
-        //}
+               
 
         private void ShowAllPersons()
         {
@@ -258,7 +189,7 @@ namespace DatingSite.Demo
             UI.WriteLine();
         }
 
-<<<<<<< HEAD
+
         private void ShowAllQuestions()
         {
 
@@ -308,8 +239,6 @@ namespace DatingSite.Demo
             }
 
         }
-=======
-        
->>>>>>> 30c466907276385371d0fa860e07e55e593e8e0f
+
     }
 }
