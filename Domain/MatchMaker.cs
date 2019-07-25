@@ -36,8 +36,8 @@ namespace DatingSite.Demo
             {
                 string matchInfo = "";
                 matchInfo += match.MatchName.PadRight(8);
-                matchInfo += (match.YourMatchingScore / MaxYourMatchingScore).ToString().PadRight(12);
-                matchInfo += (match.TheirMatchingScore / MaxTheirMatchingScore).ToString().PadRight(12);
+                matchInfo += (match.YourMatchingScore / MaxYourMatchingScore * 100 + "%").PadRight(12);
+                matchInfo += (match.TheirMatchingScore / MaxTheirMatchingScore * 100 + "%").PadRight(12);
                 UI.WriteLine(matchInfo, ConsoleColor.Magenta);
             }
             UI.WriteLine();

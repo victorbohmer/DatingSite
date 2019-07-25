@@ -96,7 +96,8 @@ namespace DatingSite.Demo
             UI.Header("Create new question");
             ShowAllQuestions();
             string questionText = UI.GetSQLValidString("Enter question text: ");
-            Question newQuestion = new Question { Text = questionText };
+            int questionWeight = UI.GetNumericInput("Enter the weight (importance) of the question");
+            Question newQuestion = new Question { Text = questionText, Weight = questionWeight };
             AddAnswersToQuestion(newQuestion);
 
             _dataAccess.AddQuestion(newQuestion);
@@ -148,7 +149,7 @@ namespace DatingSite.Demo
                 UI.WriteLine(newQuestion.ShowAllAnswers());
                 UI.WriteLine();
 
-                string answerText = UI.GetSQLValidString("Add another answer? (Enter blank to exit) ");
+                string answerText = UI.GetSQLValidString("New answer: (Enter blank to exit) ");
 
                 if (answerText == "")
                 {
@@ -173,7 +174,8 @@ namespace DatingSite.Demo
             List<Question> questionList = _dataAccess.GetAllQuestions();
 
             
-            Person answeringPerson = GetExistingPerson("Write your Id if you already have an account: ");
+            Person answeringPerson = GetExistingPerson("Enter your Id if you already have an account: ");
+            UI.WriteLine($"Hi {answeringPerson.Name}!");
 
             List<PersonAnswerForQuestion> userAnswerList = new List<PersonAnswerForQuestion>();
             foreach (Question question in questionList)
@@ -203,9 +205,9 @@ namespace DatingSite.Demo
             newPersonAnswer.DesiredAnswerId = validAnswers[desiredAnswerIndex].Id;
 
             char response = char.Parse(UI.GetSQLValidString("Choose how important your dream partner answer to you: " +
-                                                            "\nA for so important," +
-                                                            "\nB for not important" +
-                                                            "\nC for somewhat important\n").ToUpper());
+                                                            "\nA: Very important" +
+                                                            "\nB: Not important at all" +
+                                                            "\nC: Somewhat important\n").ToUpper());
             switch (response)
             {
                 case 'A':
@@ -215,6 +217,9 @@ namespace DatingSite.Demo
                     newPersonAnswer.Important = 0.00;
                     break;
                 case 'C':
+                    newPersonAnswer.Important = 0.50;
+                    break;
+                default:
                     newPersonAnswer.Important = 0.50;
                     break;
             }
