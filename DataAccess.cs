@@ -182,15 +182,20 @@ namespace DatingSite.Demo
             }
         }
 
-        internal void AddUserAnswers(UserAnswerForQuestion newUserAnswer)
+        internal void AddUserAnswers(int userId, List<UserAnswerForQuestion> userAnswerList)
         {
-            var sql = "INSERT INTO UserAnswerForQuestion (GivenAnswerId, Important, DesiredAnswerId) VALUES (@GivenAnswerId, @Important, @DesiredAnswerId)";
-            List<SqlParameter> parameterList = new List<SqlParameter>();
-            parameterList.Add(new SqlParameter("GivenAnswerId", newUserAnswer.GivenAnswerId));
-            parameterList.Add(new SqlParameter("Important", newUserAnswer.Important));
-            parameterList.Add(new SqlParameter("DesiredAnswerId", newUserAnswer.Important));
-
-            ExecuteSql(sql, parameterList);
+            var sql = "INSERT INTO UserAnswerForQuestion (UserId, GivenAnswerId, Important, DesiredAnswerId) VALUES (@UserId, @GivenAnswerId, @Important, @DesiredAnswerId)";
+            foreach (UserAnswerForQuestion userAnswer in userAnswerList)
+            {
+                List<SqlParameter> parameterList = new List<SqlParameter>();
+                parameterList.Add(new SqlParameter("UserId", userId));
+                parameterList.Add(new SqlParameter("GivenAnswerId", userAnswer.GivenAnswerId));
+                parameterList.Add(new SqlParameter("Important", userAnswer.Important));
+                parameterList.Add(new SqlParameter("DesiredAnswerId", userAnswer.Important));
+                ExecuteSql(sql, parameterList);
+            }
+            
+            
         }
     
 

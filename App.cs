@@ -170,52 +170,60 @@ namespace DatingSite.Demo
         {
             UI.Header("Answer Questions");
             List<Answer> answerList = _dataAccess.GetAllAnswers();
-            List<Question> QuestionList = _dataAccess.GetAllQuestions();
+            List<Question> questionList = _dataAccess.GetAllQuestions();
 
-            UserAnswerForQuestion newUserAnswer = new UserAnswerForQuestion();
+            
             Person answeringPerson = GetExistingPerson("Write your Id if you already have an account: ");
 
-
-            foreach (Question question in QuestionList)
+            List<UserAnswerForQuestion> userAnswerList = new List<UserAnswerForQuestion>();
+            foreach (Question question in questionList)
             {
-                UI.WriteLine($"{question.Text}");             
-                List<Answer> validAnswers = answerList.Where(x => x.QuestionId == question.Id).ToList();
-                for (int answerIndex = 0; answerIndex < validAnswers.Count; answerIndex++)
-                {                    
-                    UI.WriteLine($"{answerIndex + 1}: {validAnswers[answerIndex].Text}");                    
-                }
-
-                int givenAnswerIndex = UI.GetNumericInput("Enter your answer here: ") - 1;
-                newUserAnswer.GivenAnswerId = validAnswers[givenAnswerIndex].Id;
-
-                int desiredAnswerIndex = UI.GetNumericInput("Enter your dream partner answer here: ");
-                newUserAnswer.DesiredAnswerId = validAnswers[desiredAnswerIndex].Id;
-
-                //newUserAnswer.GivenAnswerId = UI.GetNumericInput("Enter your answer here: ");
-                //newUserAnswer.DesiredAnswerId = UI.GetNumericInput("Enter your dream partner answer here: ");
-
-                char response = char.Parse(UI.GetSQLValidString("Choose how important your dream partner answer to you: " +
-                                                                "\nA for so importnat," +
-                                                                "\nB for not important" +
-                                                                "\nC for somewhat important\n").ToUpper());
-                switch (response)
-                {
-                    case 'A':
-                        newUserAnswer.Important = 1.00;
-                        break;
-                    case 'B':
-                        newUserAnswer.Important = 0.00;
-                        break;
-                    case 'C':
-                        newUserAnswer.Important = 0.50;
-                        break;
-                }
-                _dataAccess.AddUserAnswers(newUserAnswer);
-
+                userAnswerList.Add(GetUserAnswer(question, answerList));
             }
-            ReturnToMenuAfterKeyPress("Thank you for answering the questions!");
+
+            _dataAccess.AddUserAnswers(answeringPerson.Id, userAnswerList);
+
+            ReturnToMenuAfterKeyPress($"Thank you for answering the questions, {answeringPerson.Name}!");
         }
-               
+
+        private UserAnswerForQuestion GetUserAnswer(Question question, List<Answer> answerList)
+        {
+            UI.WriteLine($"{question.Text}");
+            List<Answer> validAnswers = answerList.Where(x => x.QuestionId == question.Id).ToList();
+            for (int answerIndex = 0; answerIndex < validAnswers.Count; answerIndex++)
+            {
+                UI.WriteLine($"{answerIndex + 1}: {validAnswers[answerIndex].Text}");
+            }
+            UserAnswerForQuestion newUserAnswer = new UserAnswerForQuestion();
+
+            int givenAnswerIndex = UI.GetNumericInput("Enter your answer here: ") - 1;
+            newUserAnswer.GivenAnswerId = validAnswers[givenAnswerIndex].Id;
+
+            int desiredAnswerIndex = UI.GetNumericInput("Enter your dream partner answer here: ") - 1;
+            newUserAnswer.DesiredAnswerId = validAnswers[desiredAnswerIndex].Id;
+
+            //newUserAnswer.GivenAnswerId = UI.GetNumericInput("Enter your answer here: ");
+            //newUserAnswer.DesiredAnswerId = UI.GetNumericInput("Enter your dream partner answer here: ");
+
+            char response = char.Parse(UI.GetSQLValidString("Choose how important your dream partner answer to you: " +
+                                                            "\nA for so important," +
+                                                            "\nB for not important" +
+                                                            "\nC for somewhat important\n").ToUpper());
+            switch (response)
+            {
+                case 'A':
+                    newUserAnswer.Important = 1.00;
+                    break;
+                case 'B':
+                    newUserAnswer.Important = 0.00;
+                    break;
+                case 'C':
+                    newUserAnswer.Important = 0.50;
+                    break;
+            }
+            return newUserAnswer;
+
+        }
 
         private void ShowAllPersons(List<Person> personList = null)
         {
@@ -257,7 +265,7 @@ namespace DatingSite.Demo
                 }
                 catch
                 {
-                    UI.Write($"We could not find your id {personIdToCheck}!", ConsoleColor.Red);
+                    UI.WriteLine($"We could not find your id {personIdToCheck}!", ConsoleColor.Red);
                 }
             }
         }
