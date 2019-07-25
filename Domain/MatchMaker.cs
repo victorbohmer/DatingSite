@@ -30,9 +30,15 @@ namespace DatingSite.Demo
         {
             UI.Header($"Showing matches for {personName}");
 
-            foreach (Matching match in matchList)
+            string headerText = "Name".PadRight(8) + "Your match%".PadRight(12) + "Their match".PadRight(12);
+            UI.WriteLine(headerText);
+            foreach (Matching match in matchList.OrderByDescending(x => x.YourMatchingScore))
             {
-                UI.WriteLine(match.ToString(), ConsoleColor.Magenta);
+                string matchInfo = "";
+                matchInfo += match.MatchName.PadRight(8);
+                matchInfo += (match.YourMatchingScore / MaxYourMatchingScore).ToString().PadRight(12);
+                matchInfo += (match.TheirMatchingScore / MaxTheirMatchingScore).ToString().PadRight(12);
+                UI.WriteLine(matchInfo, ConsoleColor.Magenta);
             }
             UI.WriteLine();
         }

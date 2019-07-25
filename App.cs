@@ -130,6 +130,18 @@ namespace DatingSite.Demo
         {
             UI.Header("See match with other users");
             List<Person> personList = _dataAccess.GetAllPersonsWithAnswers();
+            ShowAllPersons(personList);
+
+            int idInput = UI.GetNumericInput("Enter the person Id you want to see matches for: ");
+
+            Person personToMatch = personList.Where(x => x.Id == idInput).First();
+            personList.Remove(personToMatch);
+
+            MatchMaker matchMaker = new MatchMaker();
+            matchMaker.CalculateMatches(personList, personToMatch);
+
+            matchMaker.PrintMatches(UI);
+
             ReturnToMenuAfterKeyPress("");
         }
 
@@ -243,19 +255,17 @@ namespace DatingSite.Demo
         //    _currentPage = Page.MainMenu;
         //}
 
-        private void ShowAllPersons()
+        private void ShowAllPersons(List<Person> personList = null)
         {
+            if (personList is null)
+                personList = _dataAccess.GetAllPersons();
 
             UI.WriteLine(Person.HeaderRow(), ConsoleColor.Blue);
-            List<Person> personList = _dataAccess.GetAllPersons();
-
             foreach (Person person in personList)
             {
                 Console.WriteLine(person.ToString());
             }
             UI.WriteLine();
-        }
-
-        
+        } 
     }
 }
