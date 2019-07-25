@@ -173,11 +173,11 @@ namespace DatingSite.Demo
             List<Question> QuestionList = _dataAccess.GetAllQuestions();
 
             UserAnswerForQuestion newUserAnswer = new UserAnswerForQuestion();
+            Person answeringPerson = GetExistingPerson("Write your Id if you already have an account: ");
 
 
             foreach (Question question in QuestionList)
             {
-                GetExistingPerson("");
                 UI.WriteLine($"{question.Text}");             
                 List<Answer> validAnswers = answerList.Where(x => x.QuestionId == question.Id).ToList();
                 for (int answerIndex = 0; answerIndex < validAnswers.Count; answerIndex++)
@@ -246,7 +246,6 @@ namespace DatingSite.Demo
 
         private Person GetExistingPerson(string prompt)
         {
-            UI.Write($"Write your Id if you already have an account:!");
             List<Person> personList = _dataAccess.GetAllPersons();
             
             while (true)
