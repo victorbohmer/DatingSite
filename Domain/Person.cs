@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DatingSite.Demo.Domain;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,7 +12,7 @@ namespace DatingSite.Demo
         public int Age { get; set; }
         public string Sexuality { get; set; }
         public string Gender { get; set; }
-        public List<Answer> AnswerList { get; set; } = new List<Answer>();
+        public List<UserAnswerForQuestion> PersonAnswers { get; set; } = new List<UserAnswerForQuestion>();
         public override string ToString()
         {
             string personInfo = "";

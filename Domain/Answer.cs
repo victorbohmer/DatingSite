@@ -6,7 +6,6 @@
         public int QuestionId { get; set; }
         public string Text { get; set; }
         public int Score { get; set; }
-        public bool Important { get; set; }
 
         public override string ToString()
         {
