@@ -15,12 +15,25 @@ namespace DatingSite.Demo
 
         public void Run()
         {
-            _menu.SetupAppMenu(this);
+            Logo();
+            UI.Write("Are you an admin or a user?\n(Eneter A for Admin or U for user)  ");
+            string response = Console.ReadLine().Trim().ToLower();
+
+            if (response == "A")
+            {
+                _menu.SetupAdminMenu(this);
+            }
+            else if (response == "B")
+            {
+                _menu.SetupAppMenu(this);
+            }
+
             while (!_menu.Quit)
             {
                 _menu.RefreshMenu();
             }
         }
+
 
         private void ReturnToMenuAfterKeyPress(string returnText)
         {
@@ -40,21 +53,21 @@ namespace DatingSite.Demo
         public void PageAddPerson()
         {
             UI.Header("Add Person");
-                   
+
             ShowAllPersons();
 
             Person newPerson = new Person();
 
             Console.WriteLine();
-            
+
             newPerson.Name = UI.GetSQLValidString("What is your name? ");
             newPerson.Age = UI.GetNumericInput("How old are you? ");
-            newPerson.Gender = UI.GetSQLValidString("What is your gender? ");        
+            newPerson.Gender = UI.GetSQLValidString("What is your gender? ");
             newPerson.Sexuality = UI.GetSQLValidString("What is your sexuality? ");
 
-            _dataAccess.AddPerson( newPerson);         
+            _dataAccess.AddPerson(newPerson);
 
-            ReturnToMenuAfterKeyPress($"{newPerson.Name} has been registred!");            
+            ReturnToMenuAfterKeyPress($"{newPerson.Name} has been registred!");
         }
 
 
@@ -73,11 +86,9 @@ namespace DatingSite.Demo
         public void PageCreateQuestion()
         {
             UI.Header("Create new question");
-
+            ShowAllPersons();
             string questionText = UI.GetSQLValidString("Enter question text: ");
-
             Question newQuestion = new Question { Text = questionText };
-
             AddAnswersToQuestion(newQuestion);
 
             _dataAccess.AddQuestion(newQuestion);
@@ -86,13 +97,32 @@ namespace DatingSite.Demo
             ReturnToMenuAfterKeyPress("Question has been saved");
         }
 
+
+        public void PageDeleteQuestion()
+        {
+            UI.Header("Delete a Question");
+            ShowAllPersons();
+            List<Question> list1 = _dataAccess.GetAllQuestions();
+            List<Answer> list2 = _dataAccess.GetAllAnswers();
+            List<Answer> answersToDelete = new List<Answer>();
+
+            int id = UI.GetNumericInput("Write the question ID that you want to delete: ");
+            var questionToDelete = list1.Where(x => x.Id == id).Single();
+            answersToDelete = list2.Where(y => y.QuestionId == id).ToList();
+
+            _dataAccess.DeleteQuestion(questionToDelete);
+            for (int i = 0; i < answersToDelete.Count; i++)
+            {
+                _dataAccess.DeleteAnswer(answersToDelete[i]);
+            }
+
+            ReturnToMenuAfterKeyPress($"{questionToDelete.Text} has been deleted!");
+        }
+
         public void PageCheckMatch()
         {
             UI.Header("See match with other users");
-
             List<Person> personList = _dataAccess.GetAllPersonsWithAnswers();
-
-
             ReturnToMenuAfterKeyPress("");
         }
 
@@ -106,7 +136,7 @@ namespace DatingSite.Demo
                 UI.WriteLine(newQuestion.ShowAllAnswers());
                 UI.WriteLine();
 
-                string answerText = UI.GetSQLValidString("Add another answer? (enter blank to exit) ");
+                string answerText = UI.GetSQLValidString("Add another answer? (Enter blank to exit) ");
 
                 if (answerText == "")
                 {
@@ -128,19 +158,19 @@ namespace DatingSite.Demo
 
         public void PageAnswerQuestions()
         {
-            UI.Header("Answer Questions");            
+            UI.Header("Answer Questions");
             List<Answer> answerList = _dataAccess.GetAllAnswers();
             List<Question> QuestionList = _dataAccess.GetAllQuestions();
             //List<string> UserAnswerForQuestion = new List<string>();
-                
+
             foreach (Question question in QuestionList)
-            {                
+            {
                 List<Answer> validAnswers = answerList.Where(x => x.QuestionId == question.Id).ToList();
                 for (int answerIndex = 0; answerIndex < validAnswers.Count; answerIndex++)
                 {
                     UI.WriteLine($"{answerIndex + 1}: {validAnswers[answerIndex].Text}");
                 }
-                int userChoice = UI.GetNumericInput("Ange val: ");
+                int userChoice = UI.GetNumericInput("Choose one of the following answers: ");
 
                 //UserAnswerForQuestion.Add(userAnswer);
             }
@@ -153,8 +183,6 @@ namespace DatingSite.Demo
         //{
         //    Header("Radera");
         //    ShowAllBlogPostsBrief();
-        //    Console.ForegroundColor = ConsoleColor.Green;
-        //    Console.WriteLine("Tags");
         //    ShowAllTagsBrief();
 
         //    List<BlogPost> list = _dataAccess.GetAllBlogPostsBrief();
@@ -210,24 +238,9 @@ namespace DatingSite.Demo
         //    _currentPage = Page.MainMenu;
         //}
 
-
-
-        //private void ShowAllBlogPostsBrief()
-        //{
-        //    List<BlogPost> list = _dataAccess.GetAllBlogPostsBrief();
-
-        //    foreach (BlogPost bp in list)
-        //    {
-        //        WriteLine(bp.Id.ToString().PadRight(5) + bp.Title.PadRight(30) + bp.Author.PadRight(20));
-        //    }
-
-        //    WriteLine();
-        //}
-
-
         private void ShowAllPersons()
         {
-            
+
             UI.WriteLine(Person.HeaderRow(), ConsoleColor.Blue);
             List<Person> personList = _dataAccess.GetAllPersons();
 
@@ -235,18 +248,44 @@ namespace DatingSite.Demo
             {
                 Console.WriteLine(person.ToString());
             }
-
             UI.WriteLine();
         }
 
-        private void PageEndProgram()
+        public void Logo(int length = 25, int height = 12)
         {
-            //Header("Avsluta");
-            //WriteLine("Tack för att du använt Bloggy");
-            Console.ReadKey();
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0; j < length; j++)
+                {
+                    if (i == 0)
+                    {
+                        if (j == 0 || j == height
+                                || j == length - 1)
+                        {
+                            Console.Write("*");
+                        }
+                        else
+                        {
+                            Console.Write(" ");
+                        }
+                    }
+
+                    else if (i == height - 1)
+                    {
+                        Console.Write("*");
+                    }
+
+                    else if ((j < i || j > height - i) &&
+                                    (j < height + i ||
+                                    j >= length - i))
+                        Console.Write("#");
+                    else
+                        Console.Write(" ");
+                }
+
+                Console.WriteLine();
+            }
+
         }
-
-        
-
     }
 }

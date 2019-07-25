@@ -24,17 +24,26 @@ namespace DatingSite.Demo
                 Prompt = prompt;
             }
         }
-
-        public void SetupAppMenu(App app)
+        
+        public void SetupAdminMenu(App app)
         {
             currentPageKey = ConsoleKey.A;
             NewMenuOption(app.PageMainMenu, ConsoleKey.A, "a) Main menu");
-            NewMenuOption(app.PageAddPerson, ConsoleKey.B, "b) Add person");
-            NewMenuOption(app.PageCreateQuestion, ConsoleKey.C, "c) Create question");
-            NewMenuOption(app.PageDeletePerson, ConsoleKey.D, "d) Delete person");
-            NewMenuOption(app.PageAnswerQuestions, ConsoleKey.E, "e) Answer questions");
-            NewMenuOption(app.PageCheckMatch, ConsoleKey.F, "f) Se matchning");
+            NewMenuOption(app.PageCreateQuestion, ConsoleKey.B, "b) Create a question");
+            NewMenuOption(app.PageDeleteQuestion, ConsoleKey.C, "c) Delete a question");           
         }
+        
+            public void SetupAppMenu(App app)
+        {
+            currentPageKey = ConsoleKey.A;
+            NewMenuOption(app.PageMainMenu, ConsoleKey.A, "a) Main menu");
+            NewMenuOption(app.PageAddPerson, ConsoleKey.B, "b) Register an account");         
+            NewMenuOption(app.PageDeletePerson, ConsoleKey.C, "c) Delete an account"); 
+            NewMenuOption(app.PageAnswerQuestions, ConsoleKey.D, "d) Answer questions");
+            NewMenuOption(app.PageCheckMatch, ConsoleKey.E, "e) View matchning");
+            
+        }
+
         private void NewMenuOption(Action menuAction, ConsoleKey hotkey, string prompt)
         {
             menuOptions.Add(new MenuOption(menuAction, hotkey, prompt));
@@ -51,6 +60,7 @@ namespace DatingSite.Demo
             else
                 currentPageKey = ConsoleKey.A;
         }
+
         public void MainMenu()
         {
             currentPageKey = ConsoleKey.A;

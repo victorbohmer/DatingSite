@@ -123,6 +123,22 @@ namespace DatingSite.Demo
 
             ExecuteSql(sql, parameterList);
         }
+        public void DeleteQuestion(Question oldQuestion)
+        {
+            var sql = "DELETE FROM Question WHERE Id=@Id";
+            List<SqlParameter> parameterList = new List<SqlParameter>();
+            parameterList.Add(new SqlParameter("Id", oldQuestion.Id));
+
+            ExecuteSql(sql, parameterList);
+        }
+        public void DeleteAnswer(Answer oldAnswer)
+        {
+            var sql = "DELETE FROM Answer WHERE ID=@Id";
+            List<SqlParameter> parameterList = new List<SqlParameter>();
+            parameterList.Add(new SqlParameter("Id", oldAnswer.QuestionId));
+
+            ExecuteSql(sql, parameterList);
+        }         
 
         public void ExecuteSql(string sql, List<SqlParameter> parameterList)
         {
