@@ -15,41 +15,49 @@ namespace DatingSite.Demo
 
         public void Run()
         {
-            Logo();
-            UI.Write("Are you an admin or a user?\n(Eneter A for Admin or U for user)  ");
-            string response = Console.ReadLine().Trim().ToLower();
-
-            if (response == "A")
-            {
-                _menu.SetupAdminMenu(this);
-            }
-            else if (response == "B")
-            {
-                _menu.SetupAppMenu(this);
-            }
-
+            _menu.SetupMainMenu(this);
             while (!_menu.Quit)
             {
                 _menu.RefreshMenu();
             }
         }
-
-
         private void ReturnToMenuAfterKeyPress(string returnText)
         {
             Console.WriteLine(returnText);
 
-            Console.WriteLine("\n Press any key to return to the main menu");
+            Console.WriteLine("\n Press any key to return to the menu");
             Console.ReadKey();
-            _menu.MainMenu();
+            _menu.GoToMenu();
         }
+
         public void PageMainMenu()
         {
-            UI.Header("Main menu");
+            UI.WriteLogo();
+            _menu.SwitchPageByUserInput();
+        }
+        public void PageAdminMenu()
+        {
+            UI.Header("Admin menu");
             ShowAllPersons();
             _menu.SwitchPageByUserInput();
         }
-
+        public void PageUserMenu()
+        {
+            UI.Header("User menu");
+            _menu.SwitchPageByUserInput();
+        }
+        public void PageSwitchToAdminMenu()
+        {
+            _menu.SetupAdminMenu(this);
+        }
+        public void PageSwitchToUserMenu()
+        {
+            _menu.SetupUserMenu(this);
+        }
+        public void PageSwitchToMainMenu()
+        {
+            _menu.SetupMainMenu(this);
+        }
         public void PageAddPerson()
         {
             UI.Header("Add Person");
@@ -96,7 +104,6 @@ namespace DatingSite.Demo
 
             ReturnToMenuAfterKeyPress("Question has been saved");
         }
-
 
         public void PageDeleteQuestion()
         {
@@ -153,8 +160,6 @@ namespace DatingSite.Demo
                 }
             }
         }
-
-
 
         public void PageAnswerQuestions()
         {
@@ -251,41 +256,6 @@ namespace DatingSite.Demo
             UI.WriteLine();
         }
 
-        public void Logo(int length = 25, int height = 12)
-        {
-            for (int i = 0; i < height; i++)
-            {
-                for (int j = 0; j < length; j++)
-                {
-                    if (i == 0)
-                    {
-                        if (j == 0 || j == height
-                                || j == length - 1)
-                        {
-                            Console.Write("*");
-                        }
-                        else
-                        {
-                            Console.Write(" ");
-                        }
-                    }
-
-                    else if (i == height - 1)
-                    {
-                        Console.Write("*");
-                    }
-
-                    else if ((j < i || j > height - i) &&
-                                    (j < height + i ||
-                                    j >= length - i))
-                        Console.Write("#");
-                    else
-                        Console.Write(" ");
-                }
-
-                Console.WriteLine();
-            }
-
-        }
+        
     }
 }
