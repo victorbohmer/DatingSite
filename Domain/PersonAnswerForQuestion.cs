@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DatingSite.Demo.Domain
 {
-    public class UserAnswerForQuestion
+    public class PersonAnswerForQuestion
     {
         public int QuestionId { get; set; }  // not done yet
         public int QuestionWeight { get; set; }

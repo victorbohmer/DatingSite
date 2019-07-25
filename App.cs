@@ -175,18 +175,18 @@ namespace DatingSite.Demo
             
             Person answeringPerson = GetExistingPerson("Write your Id if you already have an account: ");
 
-            List<UserAnswerForQuestion> userAnswerList = new List<UserAnswerForQuestion>();
+            List<PersonAnswerForQuestion> userAnswerList = new List<PersonAnswerForQuestion>();
             foreach (Question question in questionList)
             {
-                userAnswerList.Add(GetUserAnswer(question, answerList));
+                userAnswerList.Add(GetPersonAnswer(question, answerList));
             }
 
-            _dataAccess.AddUserAnswers(answeringPerson.Id, userAnswerList);
+            _dataAccess.AddPersonAnswers(answeringPerson.Id, userAnswerList);
 
             ReturnToMenuAfterKeyPress($"Thank you for answering the questions, {answeringPerson.Name}!");
         }
 
-        private UserAnswerForQuestion GetUserAnswer(Question question, List<Answer> answerList)
+        private PersonAnswerForQuestion GetPersonAnswer(Question question, List<Answer> answerList)
         {
             UI.WriteLine($"{question.Text}");
             List<Answer> validAnswers = answerList.Where(x => x.QuestionId == question.Id).ToList();
@@ -194,16 +194,13 @@ namespace DatingSite.Demo
             {
                 UI.WriteLine($"{answerIndex + 1}: {validAnswers[answerIndex].Text}");
             }
-            UserAnswerForQuestion newUserAnswer = new UserAnswerForQuestion();
+            PersonAnswerForQuestion newPersonAnswer = new PersonAnswerForQuestion { QuestionId = question.Id };
 
             int givenAnswerIndex = UI.GetNumericInput("Enter your answer here: ") - 1;
-            newUserAnswer.GivenAnswerId = validAnswers[givenAnswerIndex].Id;
+            newPersonAnswer.GivenAnswerId = validAnswers[givenAnswerIndex].Id;
 
             int desiredAnswerIndex = UI.GetNumericInput("Enter your dream partner answer here: ") - 1;
-            newUserAnswer.DesiredAnswerId = validAnswers[desiredAnswerIndex].Id;
-
-            //newUserAnswer.GivenAnswerId = UI.GetNumericInput("Enter your answer here: ");
-            //newUserAnswer.DesiredAnswerId = UI.GetNumericInput("Enter your dream partner answer here: ");
+            newPersonAnswer.DesiredAnswerId = validAnswers[desiredAnswerIndex].Id;
 
             char response = char.Parse(UI.GetSQLValidString("Choose how important your dream partner answer to you: " +
                                                             "\nA for so important," +
@@ -212,16 +209,16 @@ namespace DatingSite.Demo
             switch (response)
             {
                 case 'A':
-                    newUserAnswer.Important = 1.00;
+                    newPersonAnswer.Important = 1.00;
                     break;
                 case 'B':
-                    newUserAnswer.Important = 0.00;
+                    newPersonAnswer.Important = 0.00;
                     break;
                 case 'C':
-                    newUserAnswer.Important = 0.50;
+                    newPersonAnswer.Important = 0.50;
                     break;
             }
-            return newUserAnswer;
+            return newPersonAnswer;
 
         }
 

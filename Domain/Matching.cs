@@ -14,13 +14,13 @@ namespace DatingSite.Demo.Domain
         public Matching(Person personToMatch, Person matchablePerson)
         {
             MatchName = matchablePerson.Name;
-            List<UserAnswerForQuestion> matchAnswerList = matchablePerson.PersonAnswers;
+            List<PersonAnswerForQuestion> matchAnswerList = matchablePerson.PersonAnswers;
 
-            foreach (UserAnswerForQuestion userAnswer in personToMatch.PersonAnswers)
+            foreach (PersonAnswerForQuestion userAnswer in personToMatch.PersonAnswers)
             {
                 try
                 {
-                    UserAnswerForQuestion matchAnswer = matchAnswerList.Where(x => x.QuestionId == userAnswer.QuestionId).First();
+                    PersonAnswerForQuestion matchAnswer = matchAnswerList.Where(x => x.QuestionId == userAnswer.QuestionId).First();
                     YourMatchingScore += MatchingAdjustment(userAnswer, matchAnswer);
                     TheirMatchingScore += MatchingAdjustment(matchAnswer, userAnswer);
                 }   
@@ -32,9 +32,9 @@ namespace DatingSite.Demo.Domain
             }
         }
 
-        private double MatchingAdjustment(UserAnswerForQuestion firstUserAnswer, UserAnswerForQuestion secondUserAnswer)
+        private double MatchingAdjustment(PersonAnswerForQuestion firstPersonAnswer, PersonAnswerForQuestion secondPersonAnswer)
         {
-            return (baseScore - Math.Abs(firstUserAnswer.DesiredAnswerScore - secondUserAnswer.GivenAnswerScore)) * firstUserAnswer.Important * firstUserAnswer.QuestionWeight;
+            return (baseScore - Math.Abs(firstPersonAnswer.DesiredAnswerScore - secondPersonAnswer.GivenAnswerScore)) * firstPersonAnswer.Important * firstPersonAnswer.QuestionWeight;
         }
 
     }

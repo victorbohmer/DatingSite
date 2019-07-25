@@ -12,7 +12,7 @@ namespace DatingSite.Demo
         public int Age { get; set; }
         public string Sexuality { get; set; }
         public string Gender { get; set; }
-        public List<UserAnswerForQuestion> PersonAnswers { get; set; } = new List<UserAnswerForQuestion>();
+        public List<PersonAnswerForQuestion> PersonAnswers { get; set; } = new List<PersonAnswerForQuestion>();
         public override string ToString()
         {
             string personInfo = "";

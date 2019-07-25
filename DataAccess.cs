@@ -182,13 +182,14 @@ namespace DatingSite.Demo
             }
         }
 
-        internal void AddUserAnswers(int userId, List<UserAnswerForQuestion> userAnswerList)
+        internal void AddPersonAnswers(int userId, List<PersonAnswerForQuestion> userAnswerList)
         {
-            var sql = "INSERT INTO UserAnswerForQuestion (UserId, GivenAnswerId, Important, DesiredAnswerId) VALUES (@UserId, @GivenAnswerId, @Important, @DesiredAnswerId)";
-            foreach (UserAnswerForQuestion userAnswer in userAnswerList)
+            var sql = "INSERT INTO PersonAnswerForQuestion (PersonId, QuestionId GivenAnswerId, Important, DesiredAnswerId) VALUES (@PersonId, @QuestionId, @GivenAnswerId, @Important, @DesiredAnswerId)";
+            foreach (PersonAnswerForQuestion userAnswer in userAnswerList)
             {
                 List<SqlParameter> parameterList = new List<SqlParameter>();
-                parameterList.Add(new SqlParameter("UserId", userId));
+                parameterList.Add(new SqlParameter("PersonId", userId));
+                parameterList.Add(new SqlParameter("QuestionId", userAnswer.QuestionId));
                 parameterList.Add(new SqlParameter("GivenAnswerId", userAnswer.GivenAnswerId));
                 parameterList.Add(new SqlParameter("Important", userAnswer.Important));
                 parameterList.Add(new SqlParameter("DesiredAnswerId", userAnswer.Important));
@@ -219,7 +220,7 @@ namespace DatingSite.Demo
         public List<Person> GetAllPersonsWithAnswers()
         {
             var sql = @"SELECT Person.Id, Name, Age, Gender, Sexuality, GivenAnswer.QuestionId, Question.Weight, GivenAnswer.Score, DesiredAnswer.Score, Important
-                        FROM UserAnswerForQuestion LEFT JOIN Person ON UserId = Person.Id
+                        FROM PersonAnswerForQuestion LEFT JOIN Person ON PersonId = Person.Id
                         LEFT JOIN Answer AS GivenAnswer ON GivenAnswerId = GivenAnswer.Id
                         LEFT JOIN Answer AS DesiredAnswer ON DesiredAnswerId = DesiredAnswer.Id
                         LEFT JOIN Question ON GivenAnswer.QuestionId = Question.Id";
@@ -263,7 +264,7 @@ namespace DatingSite.Demo
         {
             if (reader.GetSqlInt32(5).IsNull)
                 return;
-            UserAnswerForQuestion answer = new UserAnswerForQuestion
+            PersonAnswerForQuestion answer = new PersonAnswerForQuestion
             {
                 QuestionId = reader.GetSqlInt32(5).Value,
                 QuestionWeight = reader.GetSqlInt32(6).Value,

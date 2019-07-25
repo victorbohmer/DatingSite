@@ -1,6 +1,6 @@
 ﻿USE [master]
 GO
-/****** Object:  Database [DatingSite]    Script Date: 7/24/2019 10:54:45 AM ******/
+/****** Object:  Database [DatingSite]    Script Date: 2019-07-25 15:08:46 ******/
 CREATE DATABASE [DatingSite]
  CONTAINMENT = NONE
  ON  PRIMARY 
@@ -87,7 +87,7 @@ ALTER DATABASE SCOPED CONFIGURATION SET QUERY_OPTIMIZER_HOTFIXES = OFF;
 GO
 USE [DatingSite]
 GO
-/****** Object:  Table [dbo].[Answer]    Script Date: 7/24/2019 10:54:45 AM ******/
+/****** Object:  Table [dbo].[Answer]    Script Date: 2019-07-25 15:08:46 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -95,58 +95,61 @@ GO
 CREATE TABLE [dbo].[Answer](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[QuestionId] [int] NOT NULL,
-	[Text] [varchar](50) NULL,
-	[Score] [int] NULL,
+	[Text] [varchar](50) NOT NULL,
+	[Score] [int] NOT NULL,
  CONSTRAINT [PK_Answer] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Person]    Script Date: 7/24/2019 10:54:45 AM ******/
+/****** Object:  Table [dbo].[Person]    Script Date: 2019-07-25 15:08:46 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Person](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Name] [varchar](50) NULL,
-	[Age] [int] NULL,
-	[Gender] [varchar](50) NULL,
-	[Sexuality] [varchar](50) NULL,
+	[Name] [varchar](50) NOT NULL,
+	[Age] [int] NOT NULL,
+	[Gender] [varchar](50) NOT NULL,
+	[Sexuality] [varchar](50) NOT NULL,
  CONSTRAINT [PK_Person] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Question]    Script Date: 7/24/2019 10:54:45 AM ******/
+/****** Object:  Table [dbo].[PersonAnswerForQuestion]    Script Date: 2019-07-25 15:08:46 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[PersonAnswerForQuestion](
+	[PersonId] [int] NOT NULL,
+	[QuestionId] [int] NOT NULL,
+	[GivenAnswerId] [int] NOT NULL,
+	[DesiredAnswerId] [int] NOT NULL,
+	[Important] [decimal](18, 0) NOT NULL,
+ CONSTRAINT [PK_PersonAnswerForQuestion] PRIMARY KEY CLUSTERED 
+(
+	[PersonId] ASC,
+	[QuestionId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Question]    Script Date: 2019-07-25 15:08:46 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Question](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Text] [varchar](50) NULL,
+	[Text] [varchar](50) NOT NULL,
+	[Weight] [int] NOT NULL,
  CONSTRAINT [PK_Question] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[UserAnswerForQuestion]    Script Date: 7/24/2019 10:54:45 AM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[UserAnswerForQuestion](
-	[UserId] [int] NOT NULL,
-	[AnswerId] [int] NOT NULL,
-	[Important] [bit] NULL,
- CONSTRAINT [PK_UserAnswerForQuestion] PRIMARY KEY CLUSTERED 
-(
-	[UserId] ASC,
-	[AnswerId] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
@@ -155,15 +158,25 @@ REFERENCES [dbo].[Question] ([Id])
 GO
 ALTER TABLE [dbo].[Answer] CHECK CONSTRAINT [FK_Answer_Question]
 GO
-ALTER TABLE [dbo].[UserAnswerForQuestion]  WITH CHECK ADD  CONSTRAINT [FK_UserAnswerForQuestion_Answer] FOREIGN KEY([AnswerId])
+ALTER TABLE [dbo].[PersonAnswerForQuestion]  WITH CHECK ADD  CONSTRAINT [FK_PersonAnswerForQuestion_Answer] FOREIGN KEY([GivenAnswerId])
 REFERENCES [dbo].[Answer] ([Id])
 GO
-ALTER TABLE [dbo].[UserAnswerForQuestion] CHECK CONSTRAINT [FK_UserAnswerForQuestion_Answer]
+ALTER TABLE [dbo].[PersonAnswerForQuestion] CHECK CONSTRAINT [FK_PersonAnswerForQuestion_Answer]
 GO
-ALTER TABLE [dbo].[UserAnswerForQuestion]  WITH CHECK ADD  CONSTRAINT [FK_UserAnswerForQuestion_Person] FOREIGN KEY([UserId])
+ALTER TABLE [dbo].[PersonAnswerForQuestion]  WITH CHECK ADD  CONSTRAINT [FK_PersonAnswerForQuestion_Question] FOREIGN KEY([QuestionId])
+REFERENCES [dbo].[Question] ([Id])
+GO
+ALTER TABLE [dbo].[PersonAnswerForQuestion] CHECK CONSTRAINT [FK_PersonAnswerForQuestion_Question]
+GO
+ALTER TABLE [dbo].[PersonAnswerForQuestion]  WITH CHECK ADD  CONSTRAINT [FK_UserAnswerForQuestion_Answer] FOREIGN KEY([GivenAnswerId])
+REFERENCES [dbo].[Answer] ([Id])
+GO
+ALTER TABLE [dbo].[PersonAnswerForQuestion] CHECK CONSTRAINT [FK_UserAnswerForQuestion_Answer]
+GO
+ALTER TABLE [dbo].[PersonAnswerForQuestion]  WITH CHECK ADD  CONSTRAINT [FK_UserAnswerForQuestion_Person] FOREIGN KEY([PersonId])
 REFERENCES [dbo].[Person] ([Id])
 GO
-ALTER TABLE [dbo].[UserAnswerForQuestion] CHECK CONSTRAINT [FK_UserAnswerForQuestion_Person]
+ALTER TABLE [dbo].[PersonAnswerForQuestion] CHECK CONSTRAINT [FK_UserAnswerForQuestion_Person]
 GO
 USE [master]
 GO
