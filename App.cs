@@ -86,7 +86,8 @@ namespace DatingSite.Demo
         public void PageCreateQuestion()
         {
             UI.Header("Create new question");
-            ShowAllPersons();
+            //ShowAllPersons();
+            ShowAllQuestions();
             string questionText = UI.GetSQLValidString("Enter question text: ");
             Question newQuestion = new Question { Text = questionText };
             AddAnswersToQuestion(newQuestion);
@@ -101,7 +102,8 @@ namespace DatingSite.Demo
         public void PageDeleteQuestion()
         {
             UI.Header("Delete a Question");
-            ShowAllPersons();
+            //ShowAllPersons();
+            ShowAllQuestions();
             List<Question> list1 = _dataAccess.GetAllQuestions();
             List<Answer> list2 = _dataAccess.GetAllAnswers();
             List<Answer> answersToDelete = new List<Answer>();
@@ -110,12 +112,12 @@ namespace DatingSite.Demo
             var questionToDelete = list1.Where(x => x.Id == id).Single();
             answersToDelete = list2.Where(y => y.QuestionId == id).ToList();
 
-            _dataAccess.DeleteQuestion(questionToDelete);
+            
             for (int i = 0; i < answersToDelete.Count; i++)
             {
                 _dataAccess.DeleteAnswer(answersToDelete[i]);
             }
-
+            _dataAccess.DeleteQuestion(questionToDelete);
             ReturnToMenuAfterKeyPress($"{questionToDelete.Text} has been deleted!");
         }
 
@@ -247,6 +249,19 @@ namespace DatingSite.Demo
             foreach (Person person in personList)
             {
                 Console.WriteLine(person.ToString());
+            }
+            UI.WriteLine();
+        }
+
+        private void ShowAllQuestions()
+        {
+
+            UI.WriteLine(Question.HeaderRow(), ConsoleColor.Blue);
+            List<Question> questionList = _dataAccess.GetAllQuestions();
+
+            foreach (Question question in questionList)
+            {
+                Console.WriteLine(question.ToString());
             }
             UI.WriteLine();
         }
