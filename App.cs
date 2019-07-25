@@ -177,7 +177,7 @@ namespace DatingSite.Demo
 
             foreach (Question question in QuestionList)
             {
-
+                GetExistingPerson("");
                 UI.WriteLine($"{question.Text}");             
                 List<Answer> validAnswers = answerList.Where(x => x.QuestionId == question.Id).ToList();
                 for (int answerIndex = 0; answerIndex < validAnswers.Count; answerIndex++)
@@ -246,17 +246,19 @@ namespace DatingSite.Demo
 
         private Person GetExistingPerson(string prompt)
         {
-            List<Person> blogList = _dataAccess.GetAllBlogPostsBrief();
+            UI.Write($"Write your Id if you already have an account:!");
+            List<Person> personList = _dataAccess.GetAllPersons();
+            
             while (true)
             {
-                int blogPostIdToEdit = UI.GetNumericInput(prompt);
+                int personIdToCheck = UI.GetNumericInput(prompt);
                 try
                 {
-                    return blogList.Where(x => x.Id == blogPostIdToEdit).First();
+                    return personList.Where(x => x.Id == personIdToCheck).First();
                 }
                 catch
                 {
-                    UI.WriteLine($"Kunde inte hitta blogpost med id {blogPostIdToEdit}");
+                    UI.Write($"We could not find your id {personIdToCheck}!", ConsoleColor.Red);
                 }
             }
         }
