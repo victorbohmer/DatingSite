@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DatingSite.Demo
 {
-    class UserInterface
+    public class UserInterface
     {
 
         public void Header(string text)
