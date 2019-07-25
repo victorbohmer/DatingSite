@@ -132,11 +132,11 @@ namespace DatingSite.Demo
 
             ExecuteSql(sql, parameterList);
         }
-        public void DeleteAnswer(Answer oldAnswer)
+        public void DeleteAnswer(Question oldQuestion)
         {
-            var sql = "DELETE FROM Answer WHERE ID=@Id";
+            var sql = "DELETE FROM Answer WHERE QuestionId=@Id";
             List<SqlParameter> parameterList = new List<SqlParameter>();
-            parameterList.Add(new SqlParameter("Id", oldAnswer.QuestionId));
+            parameterList.Add(new SqlParameter("Id", oldQuestion.Id));
 
             ExecuteSql(sql, parameterList);
         }         
@@ -182,7 +182,21 @@ namespace DatingSite.Demo
             }
         }
 
-        public int ExecuteSqlAndReturnAffectedId(string sql, List<SqlParameter> parameterList)
+        internal void AddUserAnswers(UserAnswerForQuestion newUserAnswer)
+        {
+            var sql = "INSERT INTO UserAnswerForQuestion (GivenAnswerId, Important, DesiredAnswerId) VALUES (@GivenAnswerId, @Important, @DesiredAnswerId)";
+            List<SqlParameter> parameterList = new List<SqlParameter>();
+            parameterList.Add(new SqlParameter("GivenAnswerId", newUserAnswer.GivenAnswerId));
+            parameterList.Add(new SqlParameter("Important", newUserAnswer.Important));
+            parameterList.Add(new SqlParameter("DesiredAnswerId", newUserAnswer.Important));
+
+            ExecuteSql(sql, parameterList);
+        }
+    
+
+
+
+    public int ExecuteSqlAndReturnAffectedId(string sql, List<SqlParameter> parameterList)
         {
             int output;
             using (SqlConnection connection = new SqlConnection(conString))
@@ -254,97 +268,6 @@ namespace DatingSite.Demo
             int id = reader.GetSqlInt32(0).Value;
             personList.Where(x => x.Id == id).First().PersonAnswers.Add(answer);
         }
-
-        //public List<BlogPost> GetAllBlogPostsBrief()
-        //{
-        //    var sql = @"SELECT [Id], [Author], [Title]
-        //                FROM BlogPost";
-
-        //    using (SqlConnection connection = new SqlConnection(conString))
-        //    using (SqlCommand command = new SqlCommand(sql, connection))
-        //    {
-        //        connection.Open();
-
-        //        SqlDataReader reader = command.ExecuteReader();
-
-        //        var list = new List<BlogPost>();
-
-        //        while (reader.Read())
-        //        {
-        //            var bp = new BlogPost
-        //            {
-        //                Id = reader.GetSqlInt32(0).Value,
-        //                Author = reader.GetSqlString(1).Value,
-        //                Title = reader.GetSqlString(2).Value
-        //            };
-        //            list.Add(bp);
-        //        }
-
-        //        return list;
-
-        //    }
-        //}
-
-        //public BlogPost GetPostById(int postId)
-        //{
-        //    var sql = @"SELECT [Id], [Author], [Title]
-        //                FROM BlogPost 
-        //                WHERE Id=@Id";
-
-        //    using (SqlConnection connection = new SqlConnection(conString))
-        //    using (SqlCommand command = new SqlCommand(sql, connection))
-        //    {
-        //        connection.Open();
-        //        command.Parameters.Add(new SqlParameter("Id", postId));
-
-        //        SqlDataReader reader = command.ExecuteReader();
-
-        //        if (reader.Read())
-        //        {
-        //            var bp = new BlogPost
-        //            {
-        //                Id = reader.GetSqlInt32(0).Value,
-        //                Author = reader.GetSqlString(1).Value,
-        //                Title = reader.GetSqlString(2).Value
-        //            };
-        //            return bp;
-
-        //        }
-
-        //        return null;
-
-        //    }
-        //}
-
-
-
-        //public void UpdateBlogpost(int id, string title)
-        //{
-        //    var sql = "UPDATE BlogPost SET Title=@Title WHERE Id=@id";
-
-        //    using (SqlConnection connection = new SqlConnection(conString))
-        //    using (SqlCommand command = new SqlCommand(sql, connection))
-        //    {
-        //        connection.Open();
-        //        command.Parameters.Add(new SqlParameter("Id", id));
-        //        command.Parameters.Add(new SqlParameter("Title", title));
-        //        command.ExecuteNonQuery();
-        //    }
-        //}
-
-
-        //public void AddTag(string tag)
-        //{
-        //    var sql = "INSERT INTO TagPost (Tag) VALUES (@tag)";
-
-        //    using (SqlConnection connection = new SqlConnection(conString))
-        //    using (SqlCommand command = new SqlCommand(sql, connection))
-        //    {
-        //        connection.Open();
-        //        command.Parameters.Add(new SqlParameter("Tag", tag));
-        //        command.ExecuteNonQuery();
-        //    }
-        //}
-
+        
     }
 }

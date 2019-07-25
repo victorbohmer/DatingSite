@@ -6,14 +6,13 @@ namespace DatingSite.Demo.Domain
 {
     public class UserAnswerForQuestion
     {
-        public int QuestionId { get; set; }
+        public int QuestionId { get; set; }  // not done yet
         public int QuestionWeight { get; set; }
-        public int GivenAnswerScore { get; set; }
-        public int DesiredAnswerScore{ get; set; }
-        public double Important { get; set; }
-
-        public int GivenAnswerId { get; set; }
-        public int DesiredAnswerId { get; set; }
+        public int GivenAnswerScore { get; set; }  
+        public int DesiredAnswerScore{ get; set; }  
+        public double Important { get; set; } // done
+        public int GivenAnswerId { get; set; }  // done
+        public int DesiredAnswerId { get; set; }   // done
 
     }
 }

@@ -1,5 +1,5 @@
-﻿// Här struntas i validering (för att förenkla koden)
-
+﻿
+using DatingSite.Demo.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -94,7 +94,7 @@ namespace DatingSite.Demo
         public void PageCreateQuestion()
         {
             UI.Header("Create new question");
-            ShowAllPersons();
+            ShowAllQuestions();
             string questionText = UI.GetSQLValidString("Enter question text: ");
             Question newQuestion = new Question { Text = questionText };
             AddAnswersToQuestion(newQuestion);
@@ -107,23 +107,16 @@ namespace DatingSite.Demo
 
         public void PageDeleteQuestion()
         {
-            UI.Header("Delete a Question");
-            ShowAllPersons();
+            UI.Header("Delete a Question");            
+            ShowAllQuestions();
             List<Question> list1 = _dataAccess.GetAllQuestions();
-            List<Answer> list2 = _dataAccess.GetAllAnswers();
-            List<Answer> answersToDelete = new List<Answer>();
 
             int id = UI.GetNumericInput("Write the question ID that you want to delete: ");
             var questionToDelete = list1.Where(x => x.Id == id).Single();
-            answersToDelete = list2.Where(y => y.QuestionId == id).ToList();
 
+            _dataAccess.DeleteAnswer(questionToDelete);
             _dataAccess.DeleteQuestion(questionToDelete);
-            for (int i = 0; i < answersToDelete.Count; i++)
-            {
-                _dataAccess.DeleteAnswer(answersToDelete[i]);
-            }
-
-            ReturnToMenuAfterKeyPress($"{questionToDelete.Text} has been deleted!");
+           ReturnToMenuAfterKeyPress($"{questionToDelete.Text} has been deleted!");
         }
 
         public void PageCheckMatch()
@@ -178,82 +171,51 @@ namespace DatingSite.Demo
             UI.Header("Answer Questions");
             List<Answer> answerList = _dataAccess.GetAllAnswers();
             List<Question> QuestionList = _dataAccess.GetAllQuestions();
-            //List<string> UserAnswerForQuestion = new List<string>();
+
+            UserAnswerForQuestion newUserAnswer = new UserAnswerForQuestion();
+
 
             foreach (Question question in QuestionList)
             {
+
+                UI.WriteLine($"{question.Text}");             
                 List<Answer> validAnswers = answerList.Where(x => x.QuestionId == question.Id).ToList();
                 for (int answerIndex = 0; answerIndex < validAnswers.Count; answerIndex++)
-                {
-                    UI.WriteLine($"{answerIndex + 1}: {validAnswers[answerIndex].Text}");
+                {                    
+                    UI.WriteLine($"{answerIndex + 1}: {validAnswers[answerIndex].Text}");                    
                 }
-                int userChoice = UI.GetNumericInput("Choose one of the following answers: ");
 
-                //UserAnswerForQuestion.Add(userAnswer);
+                int givenAnswerIndex = UI.GetNumericInput("Enter your answer here: ") - 1;
+                newUserAnswer.GivenAnswerId = validAnswers[givenAnswerIndex].Id;
+
+                int desiredAnswerIndex = UI.GetNumericInput("Enter your dream partner answer here: ");
+                newUserAnswer.DesiredAnswerId = validAnswers[desiredAnswerIndex].Id;
+
+                //newUserAnswer.GivenAnswerId = UI.GetNumericInput("Enter your answer here: ");
+                //newUserAnswer.DesiredAnswerId = UI.GetNumericInput("Enter your dream partner answer here: ");
+
+                char response = char.Parse(UI.GetSQLValidString("Choose how important your dream partner answer to you: " +
+                                                                "\nA for so importnat," +
+                                                                "\nB for not important" +
+                                                                "\nC for somewhat important\n").ToUpper());
+                switch (response)
+                {
+                    case 'A':
+                        newUserAnswer.Important = 1.00;
+                        break;
+                    case 'B':
+                        newUserAnswer.Important = 0.00;
+                        break;
+                    case 'C':
+                        newUserAnswer.Important = 0.50;
+                        break;
+                }
+                _dataAccess.AddUserAnswers(newUserAnswer);
+
             }
-
             ReturnToMenuAfterKeyPress("Thank you for answering the questions!");
         }
-
-
-        //public void PageDeletePost()
-        //{
-        //    Header("Radera");
-        //    ShowAllBlogPostsBrief();
-        //    ShowAllTagsBrief();
-
-        //    List<BlogPost> list = _dataAccess.GetAllBlogPostsBrief();
-
-        //    Write("Vilken bloggpost vill du radera? ");
-        //    int postId = int.Parse(Console.ReadLine());
-
-        //    Console.WriteLine("Du valde att radera den här posten");
-        //    Console.ForegroundColor = ConsoleColor.Red;
-        //    var post = list.Where(x => x.Id == postId).Single();
-        //    Console.WriteLine($"{post.Id}  " + post.Title + post.Author);
-        //    Console.ResetColor();
-
-        //    _dataAccess.DeleteBlogpost(postId);
-
-        //    Console.ForegroundColor = ConsoleColor.Red;
-        //    Console.WriteLine("Den här posten finns inte längre! ");
-        //    Console.ResetColor();
-
-        //    Console.ReadKey();
-        //    _currentPage = Page.MainMenu;
-        //}
-
-
-
-        //public void PageUpdatePost()
-        //{
-        //    Header("Uppdatera");
-        //    ShowAllBlogPostsBrief();
-        //    Console.ForegroundColor = ConsoleColor.Green;
-        //    Console.WriteLine("Tags");
-        //    ShowAllTagsBrief();
-        //    List<BlogPost> list = _dataAccess.GetAllBlogPostsBrief();
-
-        //    Write("Vilken bloggpost vill du uppdatera? ");
-        //    int postId = int.Parse(Console.ReadLine());            
-
-        //    Console.WriteLine("Du valde att uppdatera den här posten");
-        //    Console.ForegroundColor = ConsoleColor.Red;
-        //    var post = list.Where(x => x.Id == postId).Single();
-        //    Console.WriteLine($"{post.Id}  " + post.Title + post.Author);
-        //    Console.ResetColor();
-
-        //    Write("Uppdatera titeln? ");
-        //    string nyTitle = Console.ReadLine();
-        //    _dataAccess.UpdateBlogpost(postId, nyTitle);
-
-        //    Console.ForegroundColor = ConsoleColor.Green;
-        //    Console.WriteLine("Raden har uppdaterat");
-        //    Console.ResetColor();
-
-        //    Console.ReadKey();
-        //    _currentPage = Page.MainMenu;
-        //}
+               
 
         private void ShowAllPersons(List<Person> personList = null)
         {
@@ -266,6 +228,62 @@ namespace DatingSite.Demo
                 Console.WriteLine(person.ToString());
             }
             UI.WriteLine();
+<<<<<<< HEAD
         } 
+=======
+        }
+
+
+        private void ShowAllQuestions()
+        {
+
+            UI.WriteLine(Question.HeaderRow(), ConsoleColor.Blue);
+            List<Question> questionList = _dataAccess.GetAllQuestions();
+
+            foreach (Question question in questionList)
+            {
+                Console.WriteLine(question.ToString());
+            }
+            UI.WriteLine();
+        }
+
+        public void Logo(int length = 25, int height = 12)
+        {
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0; j < length; j++)
+                {
+                    if (i == 0)
+                    {
+                        if (j == 0 || j == height
+                                || j == length - 1)
+                        {
+                            Console.Write("*");
+                        }
+                        else
+                        {
+                            Console.Write(" ");
+                        }
+                    }
+
+                    else if (i == height - 1)
+                    {
+                        Console.Write("*");
+                    }
+
+                    else if ((j < i || j > height - i) &&
+                                    (j < height + i ||
+                                    j >= length - i))
+                        Console.Write("#");
+                    else
+                        Console.Write(" ");
+                }
+
+                Console.WriteLine();
+            }
+
+        }
+
+>>>>>>> f7dadd9ee7109a3085f219b178d49d3f00115894
     }
 }

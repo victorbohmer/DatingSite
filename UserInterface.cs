@@ -88,6 +88,7 @@ namespace DatingSite.Demo
             }
         }
 
+
         internal string GetSQLValidString(string prompt, int maxLength = 49)
         {
             Write(prompt, ConsoleColor.Green);
