@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DatingSite.Demo.Domain;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -198,9 +199,10 @@ namespace DatingSite.Demo
         }
         public List<Person> GetAllPersonsWithAnswers()
         {
-            var sql = @"SELECT Person.Id, [Name], [Age], [Gender], [Sexuality], [QuestionId], [Score], [Important]
+            var sql = @"SELECT Person.Id, Name, Age, Gender, Sexuality, GivenAnswer.QuestionId, GivenAnswer.QuestionWeight, GivenAnswer.Score, DesiredAnswer.Score, Important
                         FROM UserAnswerForQuestion LEFT JOIN Person ON UserId = Person.Id
-                        LEFT JOIN Answer ON AnswerId = Answer.Id";
+                        LEFT JOIN Answer AS GivenAnswer ON GivenAnswerId = GivenAnswer.Id
+                        LEFT JOIN Answer AS DesiredAnswer ON DesiredAnswerId = DesiredAnswer.Id";
 
             using (SqlConnection connection = new SqlConnection(conString))
             using (SqlCommand command = new SqlCommand(sql, connection))
@@ -239,14 +241,18 @@ namespace DatingSite.Demo
         }
         private void AddAnswerToPerson(ref List<Person> personList, SqlDataReader reader)
         {
-            Answer answer = new Answer
+            if (reader.GetSqlInt32(5).IsNull)
+                return;
+            UserAnswerForQuestion answer = new UserAnswerForQuestion
             {
                 QuestionId = reader.GetSqlInt32(5).Value,
-                Score = reader.GetSqlInt32(6).Value,
-                Important = reader.GetSqlBoolean(7).Value
+                QuestionWeight = reader.GetSqlInt32(6).Value,
+                GivenAnswerScore = reader.GetSqlInt32(6).Value,
+                DesiredAnswerScore = reader.GetSqlInt32(7).Value,
+                Important = reader.GetSqlDouble(7).Value
             };
             int id = reader.GetSqlInt32(0).Value;
-            personList.Where(x => x.Id == id).First().AnswerList.Add(answer);
+            personList.Where(x => x.Id == id).First().PersonAnswers.Add(answer);
         }
 
         //public List<BlogPost> GetAllBlogPostsBrief()
