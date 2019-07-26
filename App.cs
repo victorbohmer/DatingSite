@@ -108,7 +108,7 @@ namespace DatingSite.Demo
 
         public void PageDeleteQuestion()
         {
-            UI.Header("Delete a Question");            
+            UI.Header("Delete a Question");
             ShowAllQuestions();
             List<Question> list1 = _dataAccess.GetAllQuestions();
 
@@ -117,7 +117,7 @@ namespace DatingSite.Demo
 
             _dataAccess.DeleteAnswer(questionToDelete);
             _dataAccess.DeleteQuestion(questionToDelete);
-           ReturnToMenuAfterKeyPress($"{questionToDelete.Text} has been deleted!");
+            ReturnToMenuAfterKeyPress($"{questionToDelete.Text} has been deleted!");
         }
 
         public void PageCheckMatch()
@@ -173,7 +173,7 @@ namespace DatingSite.Demo
             List<Answer> answerList = _dataAccess.GetAllAnswers();
             List<Question> questionList = _dataAccess.GetAllQuestions();
 
-            
+
             Person answeringPerson = GetExistingPerson("Enter your Id if you already have an account: ");
             UI.WriteLine($"Hi {answeringPerson.Name}!");
 
@@ -257,7 +257,7 @@ namespace DatingSite.Demo
         private Person GetExistingPerson(string prompt)
         {
             List<Person> personList = _dataAccess.GetAllPersons();
-            
+
             while (true)
             {
                 int personIdToCheck = UI.GetNumericInput(prompt);
@@ -272,6 +272,27 @@ namespace DatingSite.Demo
             }
         }
 
-        
+
+        //private string CheckExistingPerson(string prompt)
+        //{
+        //    List<Person> personList = _dataAccess.GetAllPersons();
+        //    string personToCheck = "";
+        //    while (true)
+        //    {
+        //        try
+        //        {
+        //            personToCheck = UI.GetSQLValidString(prompt).Trim().ToLower();
+        //            personList.Where(x => x.Name == personToCheck).First();
+        //            UI.WriteLine($"We found your name {personToCheck}!", ConsoleColor.Red);
+        //        }
+        //        catch (Exception)
+        //        {
+
+        //            UI.WriteLine($"We found your name {personToCheck}!", ConsoleColor.Red);
+        //        }
+              
+        //    }
+        //}
+
     }
 }
