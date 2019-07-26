@@ -13,26 +13,27 @@ namespace DatingSite.Demo
         public string Sexuality { get; set; }
         public string Gender { get; set; }
         public List<PersonAnswerForQuestion> PersonAnswers { get; set; } = new List<PersonAnswerForQuestion>();
+
+        static int _columnWidth = 12;
         public override string ToString()
         {
             string personInfo = "";
-            personInfo += Id.ToString().PadRight(8);
-            personInfo += Name.PadRight(10);
-            personInfo += Age.ToString().PadRight(10);
-            personInfo += Gender.PadRight(10);
-            personInfo += Sexuality.PadRight(10);
+            personInfo += Id.ToString().PadRight(_columnWidth);
+            personInfo += Name.PadRight(_columnWidth);
+            personInfo += Age.ToString().PadRight(_columnWidth);
+            personInfo += Gender.PadRight(_columnWidth);
+            personInfo += Sexuality.PadRight(_columnWidth);
             return personInfo;
         }
         public static string HeaderRow()
         {
             string headerText = "";
-            headerText += "Id".PadRight(8);
-            headerText += "Name".PadRight(10);
-            headerText += "Age".PadRight(10);
-            headerText += "Gender".PadRight(10);
-            headerText += "Sexuality".PadRight(10);
+            headerText += "Id".PadRight(_columnWidth);
+            headerText += "Name".PadRight(_columnWidth);
+            headerText += "Age".PadRight(_columnWidth);
+            headerText += "Gender".PadRight(_columnWidth);
+            headerText += "Sexuality".PadRight(_columnWidth);
             return headerText;
         }
-
     }
 }

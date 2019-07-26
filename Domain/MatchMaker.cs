@@ -18,13 +18,10 @@ namespace DatingSite.Demo
             personName = personToMatch.Name;
             foreach (Person matchablePerson in matchablePersonList)
             {
-
                 matchList.Add(new Matching(personToMatch, matchablePerson));
-
             }
             MaxYourMatchingScore = matchList.Select(x => Math.Abs(x.YourMatchingScore)).Max();
             MaxTheirMatchingScore = matchList.Select(x => Math.Abs(x.TheirMatchingScore)).Max();
-
         }
         public void PrintMatches(UserInterface UI)
         {

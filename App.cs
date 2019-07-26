@@ -205,19 +205,20 @@ namespace DatingSite.Demo
             newPersonAnswer.DesiredAnswerId = validAnswers[desiredAnswerIndex].Id;
 
             char response = char.Parse(UI.GetSQLValidString("Choose how important your dream partner answer to you: " +
-                                                            "\nA: Very important" +
-                                                            "\nB: Not important at all" +
-                                                            "\nC: Somewhat important\n").ToUpper());
+                                                            "\n1: Very important" +
+                                                            "\n2: Somewhat important\n" +
+                                                            "\n3: Not important at all"
+                                                            ).ToUpper());
             switch (response)
             {
-                case 'A':
+                case '1':
                     newPersonAnswer.Important = 1.00;
                     break;
-                case 'B':
-                    newPersonAnswer.Important = 0.00;
-                    break;
-                case 'C':
+                case '2':
                     newPersonAnswer.Important = 0.50;
+                    break;
+                case '3':
+                    newPersonAnswer.Important = 0;
                     break;
                 default:
                     newPersonAnswer.Important = 0.50;
